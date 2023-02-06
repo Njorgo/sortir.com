@@ -6,9 +6,13 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
-class Participant
+#[UniqueEntity(fields: ['mail'], message: 'Le champs renseigné n est pas valid',)]
+class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,7 +31,7 @@ class Participant
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $telephone = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $mail = null;
 
     #[ORM\Column(length: 255)]
@@ -38,6 +42,9 @@ class Participant
 
     #[ORM\Column]
     private ?bool $actif = null;
+
+    #[ORM\Column(type: "json")]
+    private $roles =  [];
 
     #[ORM\ManyToOne(inversedBy: 'participants')]
     #[ORM\JoinColumn(nullable: false)]
@@ -120,12 +127,12 @@ class Participant
         return $this;
     }
 
-    public function getMotPasse(): ?string
+    public function getPassword(): ?string
     {
         return $this->motPasse;
     }
 
-    public function setMotPasse(string $motPasse): self
+    public function setPassword(string $motPasse): self
     {
         $this->motPasse = $motPasse;
 
@@ -167,6 +174,34 @@ class Participant
 
         return $this;
     }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->mail;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+
+    public function eraseCredentials()
+    {
+       // $this->plainPassword = null;
+    }
+    
 
     /**
      * @return Collection<int, Sortie>
