@@ -1,0 +1,52 @@
+header{
+    padding: 10px 0px;
+    background: #3b518e;
+    color:white;
+}
+
+.container{
+    max-width:90% !important;
+}
+
+h1{
+    text-align:left;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    color:white;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+}
+
+nav li {
+    margin-right: 1rem;
+}
+
+ul{
+
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ffa700;
+    text-decoration:none;
+}
+
+body{
+    font-family: cursive;
+    background: #e9ecef;
+}
+
+footer{
+    padding: 6px 0px;
+}

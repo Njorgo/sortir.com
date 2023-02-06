@@ -1,0 +1,11 @@
+<nav>
+    <ul>
+        {% if is_granted("ROLE_ADMIN") %}
+            <li><a href="#" title="Villes">Villes</a></li>
+            <li><a href="#" title="Campus">Campus</a></li>
+        {% endif %}
+            <li><a href="#" title="Home">Accueil</a></li>
+            <li><a href="#" title="Mon profil">Mon profil</a></li>
+            <li><a href="#" title="Se deconnecter">Se déconnecter</a></li>
+    </ul>
+</nav>
