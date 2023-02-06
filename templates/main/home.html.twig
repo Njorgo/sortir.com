@@ -1,7 +1,5 @@
-{% extends 'base.html.twig' %}
+{%extends "base.html.twig"%}
 
-{% block body %}
+{% block title %}{{parent()}} | Accueil{% endblock %}
 
-{% endblock %}
-
-{%block title %} Accueil| Home{% endblock %}
+{% block body %}{% endblock %}
