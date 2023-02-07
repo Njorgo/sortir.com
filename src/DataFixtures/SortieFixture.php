@@ -28,7 +28,7 @@ class SortieFixture extends Fixture implements DependentFixtureInterface
             $sortie=new Sortie();
             $sortie->setNom($faker->word());
             $sortie->setDateHeureDebut($faker->dateTimeBetween('- 6 months', 'now'));
-            $sortie->setDuree($faker->dateTime());
+            $sortie->setDuree($faker->numberBetween(10, 246));
             $sortie->setDateLimiteInscription($faker->dateTimeBetween($sortie->getDateHeureDebut(), 'now'));
             $sortie->setNbInscriptionsMax($faker->numberBetween(1,10));
             $sortie->setInfosSortie($faker->text(200));

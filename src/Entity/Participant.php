@@ -6,11 +6,14 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
+#[UniqueEntity(fields : ['pseudo'])]
+#[UniqueEntity(fields : ['mail'])]
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -30,7 +33,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $telephone = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $mail = null;
 
     #[ORM\Column(length: 255)]
@@ -42,23 +45,20 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $actif = null;
 
-    #[ORM\Column]
-    private array $roles = [];
-
     #[ORM\ManyToOne(inversedBy: 'participants')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $Campus = null;
 
-    #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: 'estInscrit')]
-    private Collection $estInscrit;
+    #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: 'inscrits')]
+    private Collection $inscrits;
 
     #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class, orphanRemoval: true)]
-    private Collection $organisateur;
+    private Collection $sortieOrganisers;
 
     public function __construct()
     {
-        $this->estInscrit = new ArrayCollection();
-        $this->organisateur = new ArrayCollection();
+        $this->inscrits = new ArrayCollection();
+        $this->sortieOrganisers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,18 +141,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
+       return $this->administrateur ? ['ROLE_ADMIN'] : ['ROLE_USER'];
     }
 
     public function getPassword(): ?string
@@ -160,7 +149,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->motPasse;
     }
 
-    public function setPassword(string $motPasse): self
+    public function getMotPasse(): ?string
+    {
+        return $this->motPasse;
+    }
+
+    public function setMotPasse(string $motPasse): self
     {
         $this->motPasse = $motPasse;
 
@@ -207,23 +201,23 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Sortie>
      */
-    public function getEstInscrit(): Collection
+    public function getInscrits(): Collection
     {
-        return $this->estInscrit;
+        return $this->inscrits;
     }
 
-    public function addEstInscrit(Sortie $estInscrit): self
+    public function addInscrit(Sortie $inscrit): self
     {
-        if (!$this->estInscrit->contains($estInscrit)) {
-            $this->estInscrit->add($estInscrit);
+        if (!$this->inscrits->contains($inscrit)) {
+            $this->inscrits->add($inscrit);
         }
 
         return $this;
     }
 
-    public function removeEstInscrit(Sortie $estInscrit): self
+    public function removeInscrit(Sortie $inscrit): self
     {
-        $this->estInscrit->removeElement($estInscrit);
+        $this->inscrits->removeElement($inscrit);
 
         return $this;
     }
@@ -231,27 +225,27 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Sortie>
      */
-    public function getOrganisateur(): Collection
+    public function getSortieOrganisers(): Collection
     {
-        return $this->organisateur;
+        return $this->sortieOrganisers;
     }
 
-    public function addOrganisateur(Sortie $organisateur): self
+    public function addSortieOrganiser(Sortie $sortieOrganiser): self
     {
-        if (!$this->organisateur->contains($organisateur)) {
-            $this->organisateur->add($organisateur);
-            $organisateur->setOrganisateur($this);
+        if (!$this->sortieOrganisers->contains($sortieOrganiser)) {
+            $this->sortieOrganisers->add($sortieOrganiser);
+            $sortieOrganiser->setOrganisateur($this);
         }
 
         return $this;
     }
 
-    public function removeOrganisateur(Sortie $organisateur): self
+    public function removeSortieOrganiser(Sortie $sortieOrganiser): self
     {
-        if ($this->organisateur->removeElement($organisateur)) {
+        if ($this->sortieOrganisers->removeElement($sortieOrganiser)) {
             // set the owning side to null (unless already changed)
-            if ($organisateur->getOrganisateur() === $this) {
-                $organisateur->setOrganisateur(null);
+            if ($sortieOrganiser->getOrganisateur() === $this) {
+                $sortieOrganiser->setOrganisateur(null);
             }
         }
 

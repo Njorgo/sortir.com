@@ -22,8 +22,8 @@ class Sortie
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $duree = null;
+    #[ORM\Column]
+    private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
@@ -34,14 +34,14 @@ class Sortie
     #[ORM\Column(type: Types::TEXT)]
     private ?string $infosSortie = null;
 
-    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: 'estInscrit')]
-    private Collection $estInscrit;
+    #[ORM\ManyToMany(targetEntity: Participant::class, mappedBy: 'inscrits')]
+    private Collection $inscrits;
 
-    #[ORM\ManyToOne(inversedBy: 'organisateur')]
+    #[ORM\ManyToOne(inversedBy: 'sortieOrganisers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Participant $organisateur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'etatSortie')]
+    #[ORM\ManyToOne(inversedBy: 'sorties')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
@@ -55,7 +55,7 @@ class Sortie
 
     public function __construct()
     {
-        $this->estInscrit = new ArrayCollection();
+        $this->inscrits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,12 +87,12 @@ class Sortie
         return $this;
     }
 
-    public function getDuree(): ?\DateTimeInterface
+    public function getDuree(): ?int
     {
         return $this->duree;
     }
 
-    public function setDuree(\DateTimeInterface $duree): self
+    public function setDuree(int $duree): self
     {
         $this->duree = $duree;
 
@@ -138,25 +138,25 @@ class Sortie
     /**
      * @return Collection<int, Participant>
      */
-    public function getEstInscrit(): Collection
+    public function getInscrits(): Collection
     {
-        return $this->estInscrit;
+        return $this->inscrits;
     }
 
-    public function addEstInscrit(Participant $estInscrit): self
+    public function addInscrit(Participant $inscrit): self
     {
-        if (!$this->estInscrit->contains($estInscrit)) {
-            $this->estInscrit->add($estInscrit);
-            $estInscrit->addEstInscrit($this);
+        if (!$this->inscrits->contains($inscrit)) {
+            $this->inscrits->add($inscrit);
+            $inscrit->addInscrit($this);
         }
 
         return $this;
     }
 
-    public function removeEstInscrit(Participant $estInscrit): self
+    public function removeInscrit(Participant $inscrit): self
     {
-        if ($this->estInscrit->removeElement($estInscrit)) {
-            $estInscrit->removeEstInscrit($this);
+        if ($this->inscrits->removeElement($inscrit)) {
+            $inscrit->removeInscrit($this);
         }
 
         return $this;

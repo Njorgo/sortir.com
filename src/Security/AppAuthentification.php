@@ -33,7 +33,7 @@ class AppAuthentification extends AbstractLoginFormAuthenticator
 
         return new Passport(
             new UserBadge($mail),
-            new PasswordCredentials($request->request->get('password', '')),
+            new PasswordCredentials($request->request->get('motPasse', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]

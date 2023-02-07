@@ -7,9 +7,14 @@ use App\Entity\Participant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ParticipantFixture extends Fixture implements DependentFixtureInterface
 {
+    public function __construct(private UserPasswordHasherInterface $hashMotPasse)
+    {
+        
+    }
     public function load(ObjectManager $manager): void
     {
         //Mise en place du Faker en FR
@@ -27,11 +32,10 @@ class ParticipantFixture extends Fixture implements DependentFixtureInterface
                 $participant->setPrenom($faker->firstName());
                 $participant->setTelephone($faker->phoneNumber());
                 $participant->setMail($faker->email());
-                $participant->setPassword($faker->sha1());
+                $participant->setMotPasse($this->hashMotPasse->hashPassword($participant, 'Test123456'));
                 $participant->setAdministrateur($faker->boolean());
                 $participant->setActif($faker->boolean());
-                $participant->setCampus($campus[(mt_rand(0, count($campus)-1))]);
-                $participant->setRoles(["ROLE_ADMIN", "ROLE_USER"]);
+                $participant->setCampus($campus[(mt_rand(0, count($campus)-1))]);                
                 $manager->persist($participant);
 
         }
@@ -43,4 +47,6 @@ class ParticipantFixture extends Fixture implements DependentFixtureInterface
     {
         return [CampusFixture::class];
     }
+
+    
 }

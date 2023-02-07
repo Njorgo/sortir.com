@@ -6,8 +6,10 @@ use App\Repository\EtatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: EtatRepository::class)]
+#[UniqueEntity(fields:  ['libelle'])]
 class Etat
 {
     #[ORM\Id]
@@ -15,15 +17,15 @@ class Etat
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     private ?string $libelle = null;
 
     #[ORM\OneToMany(mappedBy: 'etat', targetEntity: Sortie::class)]
-    private Collection $etatSortie;
+    private Collection $sorties;
 
     public function __construct()
     {
-        $this->etatSortie = new ArrayCollection();
+        $this->sorties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,27 +48,27 @@ class Etat
     /**
      * @return Collection<int, Sortie>
      */
-    public function getEtatSortie(): Collection
+    public function getSorties(): Collection
     {
-        return $this->etatSortie;
+        return $this->sorties;
     }
 
-    public function addEtatSortie(Sortie $etatSortie): self
+    public function addSortie(Sortie $sortie): self
     {
-        if (!$this->etatSortie->contains($etatSortie)) {
-            $this->etatSortie->add($etatSortie);
-            $etatSortie->setEtat($this);
+        if (!$this->sorties->contains($sortie)) {
+            $this->sorties->add($sortie);
+            $sortie->setEtat($this);
         }
 
         return $this;
     }
 
-    public function removeEtatSortie(Sortie $etatSortie): self
+    public function removeSortie(Sortie $sortie): self
     {
-        if ($this->etatSortie->removeElement($etatSortie)) {
+        if ($this->sorties->removeElement($sortie)) {
             // set the owning side to null (unless already changed)
-            if ($etatSortie->getEtat() === $this) {
-                $etatSortie->setEtat(null);
+            if ($sortie->getEtat() === $this) {
+                $sortie->setEtat(null);
             }
         }
 
