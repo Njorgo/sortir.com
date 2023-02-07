@@ -31,6 +31,7 @@ class ParticipantFixture extends Fixture implements DependentFixtureInterface
                 $participant->setAdministrateur($faker->boolean());
                 $participant->setActif($faker->boolean());
                 $participant->setCampus($campus[(mt_rand(0, count($campus)-1))]);
+                $participant->setRoles(["ROLE_ADMIN", "ROLE_USER"]);
                 $manager->persist($participant);
 
         }
