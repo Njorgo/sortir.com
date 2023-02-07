@@ -50,3 +50,13 @@ body{
 footer{
     padding: 6px 0px;
 }
+
+.participant-profil{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+}
+
+.participant-profil-infos{
+    margin-bottom: 1rem;
+}

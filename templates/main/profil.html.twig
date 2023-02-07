@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="participant-profil">
+        <div>
+            todo: Afficher photo profil utilisateur
+        </div>
+
+        <div class="participant-profil-infos">
+            <h2>Mon profil</h2>
+            <div>Pseudo : {{ participant.pseudo }}</div>
+            <div>Prénom : {{ participant.prenom }}</div>
+            <div>Nom : {{ participant.nom }}</div>
+            <div>Téléphone : {{ participant.telephone }}</div>
+            <div>Email : {{ participant.mail }}</div>
+            <div>Mot de passe :</div>
+            <div>Confirmation :</div>
+            <div>Campus : {{ participant.Campus.nom }}</div>
+            <div>Ma photo : <button>Télécharger vers le serveur</button></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+    {{ participant.prenom }} {{ participant.nom }}
+{% endblock %}
+
