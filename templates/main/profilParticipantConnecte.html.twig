@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+     {{ form_start(participantForm) }}
+            {{ form_row(participantForm.pseudo, {'value': app.user.pseudo}) }}
+            {{ form_row(participantForm.nom, {'value': app.user.nom}) }}
+            {{ form_row(participantForm.prenom, {'value': app.user.prenom}) }}
+            {{ form_row(participantForm.telephone, {'value': app.user.telephone}) }}
+            {{ form_row(participantForm.mail, {'value': app.user.mail}) }}
+            {{ form_row(participantForm.Campus, {'value': app.user.campus.nom}) }}
 
-    {{ form_start(participantForm)}}
-    {{ form_widget(participantForm) }}
-    <button>Valider les changements</button>
+
     {{ form_end(participantForm) }}
+    <div><button>Enregistrer modifications</button>
+    <button>Annuler</button></div>
 {% endblock %}
 
 {% block title %}
