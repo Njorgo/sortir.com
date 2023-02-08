@@ -4,8 +4,8 @@
             <li><a href="#" title="Villes">Villes</a></li>
             <li><a href="#" title="Campus">Campus</a></li>
         {% endif %}
-            <li><a href="#" title="Home">Accueil</a></li>
+            <li><a href="{{path('main_home')}}" title="Home">Accueil</a></li>
             <li><a href="#" title="Mon profil">Mon profil</a></li>
-            <li><a href="#" title="Se deconnecter">Se déconnecter</a></li>
+            <li><a href="{{path('app_logout')}}" title="Se deconnecter">Se déconnecter {{app.user.prenom}}</a></li>
     </ul>
 </nav>
