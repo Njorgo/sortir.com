@@ -60,3 +60,25 @@ footer{
 .participant-profil-infos{
     margin-bottom: 1rem;
 }
+label {
+    display: flex;
+}
+
+input, textarea, select {
+
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    max-width: 50%;
+    max-width: 200px;
+}
+.flash {
+    padding: 20px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+}
+
+.flash-success {
+    background-color: #239600;
+}

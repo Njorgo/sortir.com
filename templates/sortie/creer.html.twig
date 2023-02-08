@@ -6,6 +6,10 @@ Créer une nouvelle sortie | {{parent() }}
 
 {% block body %}
 <div>
-    {{ form(creerSortieForm) }}
+    {{ form_start(creerSortieForm) }}
+    {{ form_widget(creerSortieForm) }}
+    <button>Sauvgarder</button>
+    <button>Publier !</button>
+    {{ form_end(creerSortieForm) }}
 </div>
 {% endblock %}
