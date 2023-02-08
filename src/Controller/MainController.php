@@ -15,17 +15,4 @@ class MainController extends AbstractController {
         return $this->render("main/home.html.twig");
     }
 
-    #[Route('/profil/{participantId}', name: 'main_profil')]
-    public function profilParticipant(int $participantId, ParticipantRepository $participantRepository)
-    {
-        $participant = $participantRepository->find($participantId);
-
-        if (!$participant){
-            throw $this->createNotFoundException('Erreur 404 :Utilisateur Inexistant');
-        }
-
-        return $this->render('main/profil.html.twig', [
-            'participant'=>$participant
-        ]);
-    }
 }

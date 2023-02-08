@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(participantForm)}}
+    {{ form_widget(participantForm) }}
+    <button>Valider les changements</button>
+    {{ form_end(participantForm) }}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
