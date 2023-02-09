@@ -48,7 +48,18 @@ body{
 }
 
 footer{
+    margin-top: 5rem;
     padding: 6px 0px;
+    background: #154a80;
+
+}
+
+.credit-footer {
+    color: #ffffff;          
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .participant-profil{
@@ -81,4 +92,10 @@ input, textarea, select {
 
 .flash-success {
     background-color: #239600;
+}
+
+.login {
+    margin-top: 5rem;
+    display: grid;
+    justify-content: center;
 }
