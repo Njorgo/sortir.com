@@ -1,6 +1,6 @@
 header{
     padding: 10px 0px;
-    background: #3b518e;
+    background: #154a80;
     color:white;
 }
 
@@ -43,7 +43,7 @@ a:hover {
 }
 
 body{
-    font-family: cursive;
+    font-family: 'Nunito', sans-serif;
     background: #e9ecef;
 }
 
