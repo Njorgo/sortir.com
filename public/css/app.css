@@ -12,6 +12,14 @@ h1{
     text-align:left;
 }
 
+.logo-sortir {
+    display: flex;
+    height: auto;
+    width: auto;
+    max-height: 218px;
+    max-width: 150px;
+}
+
 nav{
     display:flex;
     justify-content:space-between;
@@ -54,12 +62,17 @@ footer{
 
 }
 
-.credit-footer {
+.credit-footer {    
     color: #ffffff;          
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.logo-eni {
+    max-width: 68px;
+    max-height: 68px;
 }
 
 .participant-profil{
