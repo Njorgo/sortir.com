@@ -1,164 +1,68 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+
     <h2>Donnees Sortie</h2>
     <section>
         <table class="table table-striped">
             <tbody>
+            <tr>
             <th scope="col">
-                id
+                Nom de la sortie
             </th>
             <th scope="col">
-                nom
+                Date de la sortie
             </th>
             <th scope="col">
-                date Heure Debut
+                Clôture
             </th>
             <th scope="col">
-                duree
+                Inscrits/places
             </th>
             <th scope="col">
-                date Limite Inscription
+               Etat
             </th>
             <th scope="col">
-                nbInscriptionsMax
+                Inscrit
             </th>
             <th scope="col">
-                infosSortie
+                Organisateur
             </th>
-            {% for s in sortie %}
+            <th scope="col">
+                Actions
+            </th>
+            </tr>
+            {% for iSortie in infosSortie %}
                 <tr>
                     <td>
-                        {{ s.id }}
+                        {{  iSortie.nom }}
                     </td>
                     <td>
-                        {{ s.nom }}
+                        {{  iSortie.dateHeureDebut | date }}
                     </td>
                     <td>
-                        {{ s.dateHeureDebut | date }}
+                        {{   iSortie.dateLimiteInscription | date('Y-m-d') }}
                     </td>
                     <td>
-                        {{  s.duree | format_datetime('none', 'short', locale='fr') }}
+                        {{  iSortie.nbInscriptionsMax }}
                     </td>
                     <td>
-                        {{  s.dateLimiteInscription | date('Y-m-d') }}
+                        {{  iSortie.libelle }}
                     </td>
                     <td>
-                        {{ s.nbInscriptionsMax }}
-                    </td>
-                    <td>
-                        {{ s.infosSortie }}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </section>
-    <br>
-    <br>
-    <h2>Donnees Campus</h2>
-    <section>
-        <table class="table table-striped">
-            <tbody>
-            <th scope="col">
-                id
-            </th>
-            <th scope="col">
-                nom
-            </th>
-        {% for c in campus %}
-                <tr>
-                    <td>
-                        {{ c.id }}
-                    </td>
-                    <td>
-                        {{ c.nom }}
-                    </td>
-                </tr>
-        {% endfor %}
-        </table>
-    </section>
-    <br>
-    <br>
-    <h2>Donnees Participants</h2>
-    <section>
-        <table class="table table-striped">
-            <tbody>
-            <th scope="col">
-                id
-            </th>
-            <th scope="col">
-                nom
-            </th>
-            <th scope="col">
-                prenom
-            </th>
-            <th scope="col">
-                pseudo
-            </th>
-            <th scope="col">
-                telephone
-            </th>
-            <th scope="col">
-               mail
-            </th>
-            <th scope="col">
-                administrateur
-            </th>
-            <th scope="col">
-                actif
-            </th>
-            {% for p in participant %}
-                <tr>
-                    <td>
-                        {{ p.id }}
-                    </td>
-                    <td>
-                        {{ p.nom }}
-                    </td>
-                    <td>
-                        {{ p.prenom }}
-                    </td>
-                    <td>
-                        {{  p.pseudo }}
-                    </td>
-                    <td>
-                        {{  p.telephone }}
-                    </td>
-                    <td>
-                        {{ p.mail }}
-                    </td>
-                    <td>
-                        {{ p.administrateur }}
-                    </td>
-                    <td>
-                        {{ p.actif }}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </section>
 
-    <br>
-    <br>
-    <h2>Donnees Etats</h2>
-    <section>
-        <table class="table table-striped">
-            <tbody>
-            <th scope="col">
-                id
-            </th>
-            <th scope="col">
-                nom
-            </th>
-            {% for e in etat %}
-                <tr>
-                    <td>
-                        {{ e.id }}
                     </td>
                     <td>
-                        {{ e.libelle }}
+                        <a href="{{ asset('profil/' ~ iSortie.organisateurId) }}">{{ iSortie.pseudo }}</a>
+                    </td>
+                    <td>
+                        {% set etatAction = { 1:'Affichage', 2: 'Afficher', 3: 'Se désister' , 4:"S'inscrire", 5:'Modifier', 6:'Publier', 7:'Annuler', 8:'', 9:'', 10:''} %}
+                            {% for i, e in etatAction %}
+                                {% if iSortie.id == i %}
+                                    {{ e }}
+                                {% endif %}
+                            {% endfor %}
                     </td>
                 </tr>
             {% endfor %}
@@ -167,79 +71,7 @@
     </section>
     <br>
     <br>
-    <h2>Donnees Lieu</h2>
-    <section>
-        <table class="table table-striped">
-            <tbody>
-            <th scope="col">
-                id
-            </th>
-            <th scope="col">
-                nom
-            </th>
-            <th scope="col">
-                rue
-            </th>
-            <th scope="col">
-                latitude
-            </th>
-            <th scope="col">
-                longitude
-            </th>
-            {% for l in lieu %}
-                <tr>
-                    <td>
-                        {{ l.id }}
-                    </td>
-                    <td>
-                        {{ l.nom }}
-                    </td>
-                    <td>
-                        {{ l.rue }}
-                    </td>
-                    <td>
-                        {{ l.latitude }}
-                    </td>
-                    <td>
-                        {{ l.longitude }}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </section>
 
-    <br>
-    <br>
-    <h2>Donnees Ville</h2>
-    <section>
-        <table class="table table-striped">
-            <tbody>
-            <th scope="col">
-                id
-            </th>
-            <th scope="col">
-                nom
-            </th>
-            <th scope="col">
-                code postal
-            </th>
-            {% for v in ville %}
-                <tr>
-                    <td>
-                        {{ v.id }}
-                    </td>
-                    <td>
-                        {{ v.nom }}
-                    </td>
-                    <td>
-                        {{ v.codePostal }}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </section>
 
 {% endblock %}
 

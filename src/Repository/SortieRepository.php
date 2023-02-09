@@ -39,28 +39,22 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   public function affichageInfosSorties()
+    {
 
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $entityManager = $this->getEntityManager();
+        $dql = "SELECT s.nom, s.dateHeureDebut, s.dateLimiteInscription, s.nbInscriptionsMax,  e.libelle, e.id,  p.pseudo, p.id as organisateurId
+        FROM App\Entity\Sortie s 
+        LEFT JOIN App\Entity\Etat e
+        WITH e.id = s.etat
+        LEFT JOIN App\Entity\Participant p
+        WITH p.id = s.organisateur";
+        $query = $entityManager->createQuery($dql);
+        $results = $query->getResult();
+        return $results;
+    }
+
+
+
+
 }
