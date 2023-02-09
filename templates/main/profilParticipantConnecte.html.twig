@@ -10,9 +10,14 @@
             {{ form_row(participantForm.Campus, {'value': app.user.campus.nom}) }}
 
 
+            <div><button>Enregistrer modifications</button>
     {{ form_end(participantForm) }}
-    <div><button>Enregistrer modifications</button>
-    <button>Annuler</button></div>
+
+    <button><a href="{{ path('main_home') }}">Annuler</a></button></div>
+
+    <div><button><a href="{{ path('profil_participant_resetPassword') }}"> Modifier mot de passe</a></button></div>
+
+
 {% endblock %}
 
 {% block title %}

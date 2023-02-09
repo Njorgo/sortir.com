@@ -3,18 +3,20 @@
 namespace App\Controller;
 
 use App\Form\ProfilParticipantConnecteType;
+use App\Form\ResetPasswordType;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 #[Route('/', name: 'profil_participant_')]
 class ProfilController extends AbstractController
 {
     #[Route('/profil/{participantId}', name: '')]
-    public function profilParticipant(int $participantId, ParticipantRepository $participantRepository)
+    public function profilParticipant(int $participantId, ParticipantRepository $participantRepository): Response
     {
         $participant = $participantRepository->find($participantId);
 
@@ -28,12 +30,65 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/monProfil', name: 'Connecte')]
-    public function profilParticipantConnecte(Request $request) : Response
+    public function profilParticipantConnecte(
+        Request $request,
+        EntityManagerInterface $entityManager) : Response
     {
-        $participantForm = $this->createForm(ProfilParticipantConnecteType::class );
+
+        $participant = $this->getUser();
+
+        $participantForm = $this->createForm(ProfilParticipantConnecteType::class, $participant );
         $participantForm->handleRequest($request);
+
+        if ($participantForm->isSubmitted() && $participantForm->isValid()){
+
+            $entityManager->persist($participant);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Profil modifié avec succès!');
+        }
+
         return $this->render('main/profilParticipantConnecte.html.twig', [
             'participantForm' => $participantForm->createView()
+        ]);
+    }
+    #[Route('/monProfil/reset', name: 'resetPassword')]
+    public function resetPasswordParticipant(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher) : Response
+    {
+        $participant = $this->getUser();
+        $passwordForm = $this->createForm(ResetPasswordType::class, $participant);
+        $passwordForm->handleRequest($request);
+
+        if ($passwordForm->isSubmitted() && $passwordForm->isValid()){
+            $motPasse= $passwordForm->get('motPasse')->getData();
+            $confirmation= $passwordForm->get('confirmation')->getData();
+
+            if($motPasse===$confirmation){
+
+                $motPassHash= $passwordHasher->hashPassword(
+                    $participant,
+                    $motPasse
+                );
+
+                $participant->setMotPasse($motPassHash);
+
+                $entityManager->persist($participant);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Mot de passe modifié avec succès !');
+
+            }
+            else{
+                $this->addFlash('error', 'Erreur dans la double saisie');
+            }
+        }
+
+
+        return $this->render('main/resetPassword.html.twig', [
+                'passwordForm'=>$passwordForm->createView()
         ]);
     }
 }

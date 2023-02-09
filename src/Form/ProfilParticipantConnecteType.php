@@ -21,31 +21,18 @@ class ProfilParticipantConnecteType extends AbstractType
         $builder
             ->add('pseudo', TextType::class, [
                 'label'=> 'Pseudo :',
-
             ])
             ->add('nom', TextType::class, [
                 'label'=> 'Nom :',
-
             ])
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom :',
-
             ])
             ->add('telephone', TelType::class, [
                 'label'=> 'Téléphone :',
-
             ] )
             ->add('mail', EmailType::class, [
                 'label'=> 'Email :',
-
-            ])
-            ->add('motPasse', PasswordType::class, [
-                'label' => 'Mot de passe :',
-                'disabled' => true
-            ])
-            ->add('confirmation', PasswordType::class, [
-                'label' => 'Confirmation :',
-                'disabled' => true
             ])
             ->add('Campus', TextType::class, [
                 'label' => 'Campus :',
