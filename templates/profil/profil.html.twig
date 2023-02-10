@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends '/base.html.twig' %}
 
 {% block body %}
     <div class="participant-profil">
@@ -13,7 +13,7 @@
             <div>Téléphone : {{ participant.telephone }}</div>
             <div>Email : {{ participant.mail }}</div>
             <div>Campus : {{ participant.Campus.nom }}</div>
-            <div><button>Retour</button></div>
+            <div><button><a href="{{ path('main_home') }}">Retour</a></button></div>
         </div>
     </div>
 {% endblock %}

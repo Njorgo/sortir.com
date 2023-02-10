@@ -24,7 +24,7 @@ class ProfilController extends AbstractController
             throw $this->createNotFoundException('Erreur 404 :Utilisateur Inexistant');
         }
 
-        return $this->render('main/profil.html.twig', [
+        return $this->render('profil/profil.html.twig', [
             'participant'=>$participant
         ]);
     }
@@ -48,7 +48,7 @@ class ProfilController extends AbstractController
             $this->addFlash('success', 'Profil modifié avec succès!');
         }
 
-        return $this->render('main/profilParticipantConnecte.html.twig', [
+        return $this->render('profil/profilParticipantConnecte.html.twig', [
             'participantForm' => $participantForm->createView()
         ]);
     }
@@ -80,14 +80,19 @@ class ProfilController extends AbstractController
 
                 $this->addFlash('success', 'Mot de passe modifié avec succès !');
 
+                $entityManager->refresh($participant);
+
             }
             else{
                 $this->addFlash('error', 'Erreur dans la double saisie');
+
+                //refresh permet d'éviter la déco en cas de mismatch entre le mdp et la confirmation
+                $entityManager->refresh($participant);
             }
         }
 
 
-        return $this->render('main/resetPassword.html.twig', [
+        return $this->render('reset_password/resetPassword.html.twig', [
                 'passwordForm'=>$passwordForm->createView()
         ]);
     }
