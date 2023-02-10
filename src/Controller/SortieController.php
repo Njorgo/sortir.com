@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Form\CreerSortieType;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,19 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/creer.html.twig', [
             'creerSortieForm'=> $creerSortieForm->createView()
+        ]);
+    }
+    #[Route('/detailSortie/{sortieId}')]
+    public function detailSortie(int $sortieId, SortieRepository $sortieRepository): Response
+    {
+        $sortie = $sortieRepository->find($sortieId);
+
+        if (!$sortie){
+            throw $this->createNotFoundException('Oups, petite erreur 404 :)');
+        }
+
+        return $this->render('sortie/detailSortie.html.twig', [
+            'sortie'=>$sortie
         ]);
     }
 }
