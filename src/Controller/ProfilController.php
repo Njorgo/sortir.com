@@ -24,7 +24,7 @@ class ProfilController extends AbstractController
             throw $this->createNotFoundException('Erreur 404 :Utilisateur Inexistant');
         }
 
-        return $this->render('main/profil.html.twig', [
+        return $this->render('profil/profil.html.twig', [
             'participant'=>$participant
         ]);
     }
@@ -48,7 +48,7 @@ class ProfilController extends AbstractController
             $this->addFlash('success', 'Profil modifié avec succès!');
         }
 
-        return $this->render('main/profilParticipantConnecte.html.twig', [
+        return $this->render('profil/profilParticipantConnecte.html.twig', [
             'participantForm' => $participantForm->createView()
         ]);
     }
@@ -92,7 +92,7 @@ class ProfilController extends AbstractController
         }
 
 
-        return $this->render('main/resetPassword.html.twig', [
+        return $this->render('reset_password/resetPassword.html.twig', [
                 'passwordForm'=>$passwordForm->createView()
         ]);
     }
