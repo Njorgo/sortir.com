@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Sortie;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +19,7 @@ class CreerSortieType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
-                'label' => 'Nom de la sortie'
+                'label' => 'Quel nom voulez vous donnez à votre sortie ?'
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
                 'label' => 'Date de la sortie',
@@ -31,16 +33,21 @@ class CreerSortieType extends AbstractType
                 ]
 
             ])
-            ->add('lieuSortie', TextType::class, [
+            /*->add('lieuSortie', EntityType::class, [
+                'class' => Lieu::class,
                 'label' => 'Lieu de la sortie'
-            ])
+            ])*/
+            
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre de participants maximum',
                 'attr' => [
-                    'min' => 0
+                    'min' => 1
                 ]
             ])
-            ->add('infosSortie')
+            ->add('infosSortie', TextareaType::class, [
+                'label' => 'Description de la sortie'
+            ])
+
             ->add('dateLimiteInscription', DateType::class, [
                 'label' => 'Date limite d\'inscription',
                 'html5' => true,
