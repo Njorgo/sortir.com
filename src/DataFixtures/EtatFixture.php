@@ -10,17 +10,33 @@ class EtatFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        //Mise en place du Faker en FR
-        $faker = \Faker\Factory::create('fr_FR');
-
-        for ($i=1; $i<= 10; $i++){
-
+        
             $etat=new Etat();
-            $etat->setLibelle($faker->word());
+            $etat->setLibelle('Créée');
             $manager->persist($etat);
 
-        }
+            $etat=new Etat();
+            $etat->setLibelle('Ouverte');
+            $manager->persist($etat);
+
+            $etat=new Etat();
+            $etat->setLibelle('Clôturée');
+            $manager->persist($etat);
+
+            $etat=new Etat();
+            $etat->setLibelle('Activité en cours');
+            $manager->persist($etat);
+
+            $etat=new Etat();
+            $etat->setLibelle('Passée');
+            $manager->persist($etat);
+            
+            $etat=new Etat();
+            $etat->setLibelle('Annulée');
+            $manager->persist($etat);
+        
 
         $manager->flush();
     }
+   
 }
