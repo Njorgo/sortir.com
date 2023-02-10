@@ -8,15 +8,12 @@
             {{ form_row(participantForm.telephone, {'value': app.user.telephone}) }}
             {{ form_row(participantForm.mail, {'value': app.user.mail}) }}
             {{ form_row(participantForm.Campus, {'value': app.user.campus.nom}) }}
-
-
+            {{ form_row(participantForm.motPasse) }}
+            {{ form_row(participantForm.confirmation) }}
             <div><button>Enregistrer modifications</button>
     {{ form_end(participantForm) }}
 
     <button><a href="{{ path('main_home') }}">Annuler</a></button></div>
-
-    <div><button><a href="{{ path('profil_participant_resetPassword') }}"> Modifier mot de passe</a></button></div>
-
 
 {% endblock %}
 

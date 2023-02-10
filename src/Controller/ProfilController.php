@@ -20,55 +20,35 @@ class ProfilController extends AbstractController
     {
         $participant = $participantRepository->find($participantId);
 
-        if (!$participant){
+        if (!$participant) {
             throw $this->createNotFoundException('Erreur 404 :Utilisateur Inexistant');
         }
 
         return $this->render('profil/profil.html.twig', [
-            'participant'=>$participant
+            'participant' => $participant
         ]);
     }
 
     #[Route('/monProfil', name: 'Connecte')]
     public function profilParticipantConnecte(
-        Request $request,
-        EntityManagerInterface $entityManager) : Response
+        Request                     $request,
+        EntityManagerInterface      $entityManager,
+        UserPasswordHasherInterface $passwordHasher): Response
     {
 
         $participant = $this->getUser();
 
-        $participantForm = $this->createForm(ProfilParticipantConnecteType::class, $participant );
+        $participantForm = $this->createForm(ProfilParticipantConnecteType::class, $participant);
         $participantForm->handleRequest($request);
 
-        if ($participantForm->isSubmitted() && $participantForm->isValid()){
+        if ($participantForm->isSubmitted() && $participantForm->isValid()) {
 
-            $entityManager->persist($participant);
-            $entityManager->flush();
+            $motPasse = $participantForm->get('motPasse')->getData();
+            $confirmation = $participantForm->get('confirmation')->getData();
 
-            $this->addFlash('success', 'Profil modifié avec succès!');
-        }
+            if ($motPasse === $confirmation && $motPasse !== null) {
 
-        return $this->render('profil/profilParticipantConnecte.html.twig', [
-            'participantForm' => $participantForm->createView()
-        ]);
-    }
-    #[Route('/monProfil/reset', name: 'resetPassword')]
-    public function resetPasswordParticipant(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher) : Response
-    {
-        $participant = $this->getUser();
-        $passwordForm = $this->createForm(ResetPasswordType::class, $participant);
-        $passwordForm->handleRequest($request);
-
-        if ($passwordForm->isSubmitted() && $passwordForm->isValid()){
-            $motPasse= $passwordForm->get('motPasse')->getData();
-            $confirmation= $passwordForm->get('confirmation')->getData();
-
-            if($motPasse===$confirmation){
-
-                $motPassHash= $passwordHasher->hashPassword(
+                $motPassHash = $passwordHasher->hashPassword(
                     $participant,
                     $motPasse
                 );
@@ -78,22 +58,31 @@ class ProfilController extends AbstractController
                 $entityManager->persist($participant);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Mot de passe modifié avec succès !');
-
                 $entityManager->refresh($participant);
 
-            }
-            else{
-                $this->addFlash('error', 'Erreur dans la double saisie');
+                $this->addFlash('success', 'Profil modifié avec succès!');
 
-                //refresh permet d'éviter la déco en cas de mismatch entre le mdp et la confirmation
+
+            }elseif ($motPasse !== $confirmation && $motPasse!== null){
+                $this->addFlash('warning', 'Erreur saisie mot de passe');
                 $entityManager->refresh($participant);
-            }
+            }else{
+            $entityManager->persist($participant);
+            $entityManager->flush();
+
+            $entityManager->refresh($participant);
+
+            $this->addFlash('success', 'Profil modifié avec succès!');}
+
         }
-
-
-        return $this->render('reset_password/resetPassword.html.twig', [
-                'passwordForm'=>$passwordForm->createView()
+        return $this->render('profil/profilParticipantConnecte.html.twig', [
+            'participantForm' => $participantForm->createView()
         ]);
     }
 }
+
+
+
+
+
+
