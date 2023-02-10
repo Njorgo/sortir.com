@@ -80,9 +80,14 @@ class ProfilController extends AbstractController
 
                 $this->addFlash('success', 'Mot de passe modifié avec succès !');
 
+                $entityManager->refresh($participant);
+
             }
             else{
                 $this->addFlash('error', 'Erreur dans la double saisie');
+
+                //refresh permet d'éviter la déco en cas de mismatch entre le mdp et la confirmation
+                $entityManager->refresh($participant);
             }
         }
 
