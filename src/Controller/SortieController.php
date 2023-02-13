@@ -59,8 +59,7 @@ class SortieController extends AbstractController
             'creerSortieForm' => $creerSortieForm->createView()
         ]);
     }
-
-    #[Route('/detailSortie/{sortieId}')]
+    #[Route('/afficher/{sortieId}')]
     public function detailSortie(int $sortieId, SortieRepository $sortieRepository): Response
     {
         $sortie = $sortieRepository->find($sortieId);

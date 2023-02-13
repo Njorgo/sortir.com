@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Form\ProfilParticipantConnecteType;
-use App\Form\ResetPasswordType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

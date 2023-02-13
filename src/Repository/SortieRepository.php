@@ -40,11 +40,11 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-   public function affichageInfosSorties()
+    public function listeInfosSorties()
     {
 
         $entityManager = $this->getEntityManager();
-        $dql = "SELECT s.nom, s.dateHeureDebut, s.dateLimiteInscription, s.nbInscriptionsMax,  e.libelle, e.id,  p.pseudo, p.id as organisateurId
+        $dql = "SELECT s.id as sortieID, s.nom, s.dateHeureDebut, s.dateLimiteInscription, s.duree, s.nbInscriptionsMax,  e.libelle, e.id,  p.pseudo, p.id as organisateurId
         FROM App\Entity\Sortie s 
         LEFT JOIN App\Entity\Etat e
         WITH e.id = s.etat
@@ -54,5 +54,6 @@ class SortieRepository extends ServiceEntityRepository
         $results = $query->getResult();
         return $results;
     }
+
 
 }
