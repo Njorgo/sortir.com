@@ -18,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreerSortieType extends AbstractType
@@ -51,6 +53,10 @@ class CreerSortieType extends AbstractType
                 'choice_label'=>'Nom',
                 'label' => 'Lieu de la sortie',
                 'placeholder'=>''
+            ])
+            ->add('creerLieu', CreerLieuType::class, [
+                'required' => false,
+                'mapped' => false
             ])            
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre de participants maximum',
@@ -67,14 +73,34 @@ class CreerSortieType extends AbstractType
                 'html5' => true,
                 'widget' => 'single_text'
             ])
-            ->add("Sauvegarder",ButtonType::class)
+            ->add("Sauvegarder",SubmitType::class)
             ->add("Publier",SubmitType::class);
+   
+    
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $events) {
+                $form = $events->getForm();
+                $data = $events->getData();
+                if (!empty($data['creerLieu']['nom'])) {
+                    $form ->remove('lieu');
+                    
+                    $form ->add('creerLieu', CreerLieuType::class, array(
+                        'required' => true,
+                        'mapped' => true,
+                    ));
+                }
+            }
+        ); 
     }
 
+    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
+            "allow_extra_fields" => true,
         ]);
     }
 }

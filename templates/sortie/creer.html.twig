@@ -14,18 +14,36 @@ Créer une nouvelle sortie | {{parent() }}
         {{ form_row(creerSortieForm.dateLimiteInscription) }}
         {{ form_row(creerSortieForm.nbInscriptionsMax) }}
         {{ form_row(creerSortieForm.duree) }}
-        <span>Campus :</span> {{ app.user.campus.nom }}
+        {{ form_row(creerSortieForm.infosSortie) }}
+        <span>Campus : </span> {{ app.user.campus.nom }}
+
+        {% if creerSortieForm.lieuSortie is defined %}
         {{ form_row(creerSortieForm.ville) }}
         {{ form_row(creerSortieForm.lieuSortie) }}
-        {{ form_row(creerSortieForm.infosSortie) }}
+        {% endif %}
+
+        <button id="collapseButton">Ajouter un lieu</button>
+
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body detail-option">
+                <label for="rechercherlieu"> Rechercher un lieu </label>
+                <input type="text" id="rechercherLieu" class="form-control m-2">
+                {{ form_widget(creerSortieForm.creerLieu.nom) }}
+                {{ form_widget(creerSortieForm.creerLieu.rue,{'attr': {'id': 'route'}}) }}
+                {{ form_widget(creerSortieForm.creerLieu.ville, {'attr': {'id': 'locality'}}) }}
+                {{ form_widget(creerSortieForm.creerLieu.latitude, {'attr': {'type': 'hidden'}}) }}
+                {{ form_widget(creerSortieForm.creerLieu.longitude, {'attr': {'type': 'hidden'}})}}
+            </div>
+        </div>
+        
     </div>
 </div>
-<div >
+<div>
     <div>{{ form_row(creerSortieForm.Sauvegarder, {'attr':{'class':'btn btn-primary'}}) }}</div>
     <div>{{ form_row(creerSortieForm.Publier, {'attr':{'class':'btn btn-primary'}}) }}</div>    
     <div><a href="{{ path('main_home') }}" class="btn btn-primary">Annuler</a></div>
 </div>
-{{ form_rest(creerSortieForm) }}
-{{ form_end(creerSortieForm, {render_rest : false}) }}
+
+{{ form_end(creerSortieForm) }}
 
 {% endblock %}
