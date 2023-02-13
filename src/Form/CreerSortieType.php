@@ -3,11 +3,17 @@
 namespace App\Form;
 
 use App\Entity\Sortie;
+use App\Entity\Lieu;
+use App\Entity\Ville;
+use App\Entity\Campus;
+use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +28,7 @@ class CreerSortieType extends AbstractType
                 'label' => 'Quel nom voulez vous donnez à votre sortie ?'
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => 'Date de la sortie',
+                'label' => 'Date et heure de la sortie',
                 'html5' => true,
                 'widget' => 'single_text'
             ])
@@ -31,13 +37,20 @@ class CreerSortieType extends AbstractType
                 'attr' => [
                     'min' => 5
                 ]
-
             ])
-            /*->add('lieuSortie', EntityType::class, [
+            ->add('ville', EntityType::class, [
+                'class' => Ville::class,
+                'choice_label'=>'Nom',
+                'label'=>'Ville',
+                'mapped'=>false,
+                'placeholder'=>''
+                ])
+            ->add('lieuSortie', EntityType::class, [
                 'class' => Lieu::class,
-                'label' => 'Lieu de la sortie'
-            ])*/
-            
+                'choice_label'=>'Nom',
+                'label' => 'Lieu de la sortie',
+                'placeholder'=>''
+            ])            
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre de participants maximum',
                 'attr' => [
@@ -52,7 +65,9 @@ class CreerSortieType extends AbstractType
                 'label' => 'Date limite d\'inscription',
                 'html5' => true,
                 'widget' => 'single_text'
-            ]);
+            ])
+            ->add("Sauvegarder",SubmitType::class)
+            ->add("Publier",SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

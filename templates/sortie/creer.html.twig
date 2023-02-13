@@ -4,12 +4,27 @@
 Créer une nouvelle sortie | {{parent() }}
 {% endblock %}
 
-{% block body %}
-<div>
-    {{ form_start(creerSortieForm) }}
-    {{ form_widget(creerSortieForm) }}
-    <button>Sauvgarder</button>
-    <button>Publier !</button>
-    {{ form_end(creerSortieForm) }}
+{% block body %}<h2>Creer une sortie</h2>
+{{ form_start(creerSortieForm) }}
+
+<div id="creer-sortie">
+    <div>
+        <p>{{ form_row(creerSortieForm.nom) }}</p>
+        {{ form_row(creerSortieForm.dateHeureDebut) }}
+        {{ form_row(creerSortieForm.dateLimiteInscription) }}
+        {{ form_row(creerSortieForm.nbInscriptionsMax) }}
+        {{ form_row(creerSortieForm.duree) }}
+        <span>Campus :</span> {{ app.user.campus.nom }}
+        {{ form_row(creerSortieForm.ville) }}
+        {{ form_row(creerSortieForm.lieuSortie) }}
+        {{ form_row(creerSortieForm.infosSortie) }}
+    </div>
 </div>
+<div >
+    <div>{{ form_row(creerSortieForm.Sauvegarder) }} {{ form_row(creerSortieForm.Publier) }}</div>
+    <div><a href="{{ path('main_home') }}" class="btn btn-primary">Annuler</a></div>
+</div>
+{{ form_rest(creerSortieForm) }}
+{{ form_end(creerSortieForm, {render_rest : false}) }}
+
 {% endblock %}
