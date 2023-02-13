@@ -22,10 +22,10 @@ Créer une nouvelle sortie | {{parent() }}
         {{ form_row(creerSortieForm.lieuSortie) }}
         {% endif %}
 
-        <button id="collapseButton">Ajouter un lieu</button>
+        <button>Ajouter un lieu</button>
 
-        <div class="collapse" id="collapseExample">
-            <div class="card card-body detail-option">
+        {#<div>
+            <div>
                 <label for="rechercherlieu"> Rechercher un lieu </label>
                 <input type="text" id="rechercherLieu" class="form-control m-2">
                 {{ form_widget(creerSortieForm.creerLieu.nom) }}
@@ -34,7 +34,7 @@ Créer une nouvelle sortie | {{parent() }}
                 {{ form_widget(creerSortieForm.creerLieu.latitude, {'attr': {'type': 'hidden'}}) }}
                 {{ form_widget(creerSortieForm.creerLieu.longitude, {'attr': {'type': 'hidden'}})}}
             </div>
-        </div>
+        </div>#}
         
     </div>
 </div>
