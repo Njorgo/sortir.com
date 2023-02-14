@@ -9,33 +9,17 @@ Créer une nouvelle sortie | {{parent() }}
 
 <div id="creer-sortie">
     <div>
-        <p>{{ form_row(creerSortieForm.nom) }}</p>
+        {{ form_row(creerSortieForm.nom) }}
         {{ form_row(creerSortieForm.dateHeureDebut) }}
         {{ form_row(creerSortieForm.dateLimiteInscription) }}
         {{ form_row(creerSortieForm.nbInscriptionsMax) }}
         {{ form_row(creerSortieForm.duree) }}
         {{ form_row(creerSortieForm.infosSortie) }}
         <span>Campus : </span> {{ app.user.campus.nom }}
-
-        {% if creerSortieForm.lieuSortie is defined %}
         {{ form_row(creerSortieForm.ville) }}
         {{ form_row(creerSortieForm.lieuSortie) }}
-        {% endif %}
 
-        
-
-        <div>{% if creerSortieForm.lieuSortie is defined %}
-            <div>
-                <label for="rechercherlieu"> Rechercher un lieu </label>
-                <input type="text" id="rechercherLieu" class="form-control m-2">
-                {{ form_widget(creerSortieForm.creerLieu.nom) }}
-                {{ form_widget(creerSortieForm.creerLieu.rue,{'attr': {'id': 'route'}}) }}
-                {{ form_widget(creerSortieForm.creerLieu.ville, {'attr': {'id': 'locality'}}) }}
-                {{ form_widget(creerSortieForm.creerLieu.latitude, {'attr': {'type': 'hidden'}}) }}
-                {{ form_widget(creerSortieForm.creerLieu.longitude, {'attr': {'type': 'hidden'}})}}
-            </div>
-            <button>Ajouter un lieu</button>
-            {% endif %}
+       <div> <a href="{{ path('lieu_cree') }}" class="btn btn-primary">Ajouter un lieu</a> </div>
         </div>
         
     </div>
