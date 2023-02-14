@@ -5,7 +5,8 @@ namespace App\Form;
 use App\Entity\Sortie;
 use App\Entity\Lieu;
 use App\Entity\Ville;
-use Doctrine\ORM\EntityRepository;
+use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -15,6 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreerSortieType extends AbstractType
@@ -38,21 +42,26 @@ class CreerSortieType extends AbstractType
             ])
             ->add('ville', EntityType::class, [
                 'class' => Ville::class,
-                'query_builder' => function (EntityRepository $entityRepository) {
-                    return $entityRepository->createQueryBuilder('v')->orderBy('v.name', 'ASC');
+                'choice_label'=>function (Ville $ville) {
+                    return $ville->getNom();
                 },
-                'choice_label'=>'Nom',
+                'query_builder' => function (VilleRepository $villeRepository) {
+                    return $villeRepository->createQueryBuilder('v')->orderBy('v.nom', 'ASC');
+                },
                 'label'=>'Ville :',
                 'mapped'=>false,
                 'placeholder'=>''
                 ])
             ->add('lieuSortie', EntityType::class, [
                 'class' => Lieu::class,
-                'query_builder' => function (EntityRepository $entityRepository) {
-                    return $entityRepository->createQueryBuilder('v')->orderBy('v.ville', 'ASC');
+                'choice_label' => function (Lieu $lieuSortie ) {
+                    return $lieuSortie->getNom();
                 },
-                'choice_label'=>'Nom',
-                'label' => 'Lieu de la sortie :',
+                'query_builder' => function (LieuRepository $lieuRepository) {
+                    return $lieuRepository->createQueryBuilder('l')->orderBy('l.nom', 'ASC');
+                },
+                'label'=>'Lieu :',
+                'mapped'=>false,
                 'placeholder'=>''
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
@@ -70,8 +79,30 @@ class CreerSortieType extends AbstractType
                 'html5' => true,
                 'widget' => 'single_text'
             ])
+           /* ->add('chercherLieu', SubmitType::class, [
+                'label'=>'Chercher un lieu'
+            ])*/
             ->add("Sauvegarder",SubmitType::class)
-            ->add("Publier",SubmitType::class);       
+            ->add("Publier",SubmitType::class);
+            
+            $formModifier = function (FormInterface $form, Ville $ville = null) {
+                $lieuSortie = (null === $ville) ? [] : $ville->getLieux();
+                $form->add('lieuSortie', EntityType::class, [
+                    'class' => Lieu::class,
+                    'choices' => $lieuSortie,
+                    'choice_label' => 'nom',
+                    'placeholder' => 'Sélectionner une ville',
+                    'label' => "Lieu : "
+                ]);
+            };
+
+            $builder->get('ville')->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $eventVille) use ($formModifier) {
+                    $ville = $eventVille->getForm()->getData();
+                    $formModifier($eventVille->getForm()->getParent(), $ville);
+                }
+            );
     }
 
     

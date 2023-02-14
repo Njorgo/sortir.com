@@ -6,7 +6,6 @@ use App\Entity\Participant;
 use App\Filtre\FiltreClass;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -68,6 +67,15 @@ class SortieRepository extends ServiceEntityRepository
         }
             return $queryBuilder->getQuery()->getResult();
 
+    }
+
+    public function listeSorties(){
+        $qb = $this->createQueryBuilder('s')
+            ->select('s','i','e')
+            ->leftJoin('s.inscrits', 'i')
+            ->leftJoin('s.etat', 'e');
+            
+            return $qb->getQuery()->getResult();
     }
 
 
