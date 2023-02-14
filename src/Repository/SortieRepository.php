@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Filtre\FiltreClass;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -40,7 +41,7 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-    public function listeInfosSorties()
+    public function listeInfosSorties(FiltreClass $data)
     {
 
         $entityManager = $this->getEntityManager();
@@ -50,9 +51,27 @@ class SortieRepository extends ServiceEntityRepository
         WITH e.id = s.etat
         LEFT JOIN App\Entity\Participant p
         WITH p.id = s.organisateur";
-        $query = $entityManager->createQuery($dql);
-        $results = $query->getResult();
-        return $results;
+
+        if (!empty($data->motCle)){
+            $dql = "SELECT s.id as sortieID, s.nom, s.dateHeureDebut, s.dateLimiteInscription, s.duree, s.nbInscriptionsMax,  e.libelle, e.id,  p.pseudo, p.id as organisateurId
+        FROM App\Entity\Sortie s 
+        LEFT JOIN App\Entity\Etat e
+        WITH e.id = s.etat
+        LEFT JOIN App\Entity\Participant p
+        WITH p.id = s.organisateur
+        WHERE s.nom LIKE :foo";
+            $query = $entityManager->createQuery($dql);
+            $query->setParameter('foo', '%'.$data->motCle.'%');
+            dump($data);
+            $results = $query->getResult();
+            return $results;
+        }
+        else
+        {
+            $query = $entityManager->createQuery($dql);
+            $results = $query->getResult();
+            return $results;
+        }
     }
 
 

@@ -1,0 +1,20 @@
+{{ form_start(formFiltre) }}
+{{ form_row(formFiltre.motCle) }}
+{{ form_row(formFiltre.campus) }}
+
+    <h4>Dates :</h4>
+<div class="row">
+    <div class="col-md-6">
+        {{ form_row(formFiltre.dateMini) }}</div>
+
+    <div class="col-md-6">
+        {{ form_row(formFiltre.dateMax) }}</div>
+
+</div>
+{{ form_row(formFiltre.estOrganisee) }}
+{{ form_row(formFiltre.estInscrit) }}
+{{ form_row(formFiltre.nonInscrit) }}
+{{ form_row(formFiltre.sortiesFinies) }}
+
+<button type="submit" class="btn btn-primary w100">Filtrer la recherche</button>
+{{ form_end(formFiltre) }}
