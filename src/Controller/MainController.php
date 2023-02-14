@@ -6,14 +6,17 @@ use App\Entity\Participant;
 use App\Filtre\FiltreClass;
 use App\Entity\Sortie;
 use App\Form\FiltreType;
+use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Service\GestionEtatSortie;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController {
@@ -127,4 +130,36 @@ class MainController extends AbstractController {
         return $this->redirectToRoute('main_home');
 
     }
+
+    #[Route('/supprimer/{idSortie}', name: 'supprimer')]
+    public function supprimer($sortieId, SortieRepository $sortieRepository, EntityManagerInterface $entityManager, CampusRepository $campusRepository,
+    ParticipantRepository $participantRepository, GestionEtatSortie $gestionEtatSortie,): Response {
+        $sortie = $sortieRepository->findOneBy(['id' => $sortieId], []);
+        $erreur = false;
+        $user = $participantRepository->findOneBy(['username' => $this->getUser()->getUserIdentifier()]);
+
+        if ($sortie->getEtat() != "Créée") {
+            $this->addFlash('error', "Vous ne pouvez pas modifier une sortie qui n'est pas en cours de création");
+            $erreur = true;
+        }
+        if ($sortie->getOrganisateur() !== $user) {
+            $this->addFlash('error', "Vous ne pouvez pas modifier une sortie dont vous n'êtes pas l'oganisateur");
+            $erreur = true;
+        }
+
+        if ($erreur == false) {
+            $entityManager->remove($sortie);
+            $entityManager->flush();
+        }
+        $gestionEtatSortie->verifierEtat();
+        $campus = $campusRepository->findAll();
+        $sorties = $sortieRepository->findAll();
+
+        return $this->render('home.html.twig', [
+            "sorties" => $sorties,
+            "campus" => $campus,
+        ]);
+    }
+
+
 }

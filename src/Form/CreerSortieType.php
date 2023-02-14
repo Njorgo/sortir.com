@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Sortie;
 use App\Entity\Lieu;
 use App\Entity\Ville;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -37,6 +38,9 @@ class CreerSortieType extends AbstractType
             ])
             ->add('ville', EntityType::class, [
                 'class' => Ville::class,
+                'query_builder' => function (EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('v')->orderBy('v.name', 'ASC');
+                },
                 'choice_label'=>'Nom',
                 'label'=>'Ville :',
                 'mapped'=>false,
@@ -44,6 +48,9 @@ class CreerSortieType extends AbstractType
                 ])
             ->add('lieuSortie', EntityType::class, [
                 'class' => Lieu::class,
+                'query_builder' => function (EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('v')->orderBy('v.ville', 'ASC');
+                },
                 'choice_label'=>'Nom',
                 'label' => 'Lieu de la sortie :',
                 'placeholder'=>''

@@ -22,8 +22,11 @@ class SortieController extends AbstractController
         $creerSortieForm->handleRequest($request);
         
         if ($creerSortieForm->isSubmitted() && $creerSortieForm->isValid()) {
-
-            $etat = $etatRepositery->findOneBy(["libelle" => "Créée"]);
+            if ($creerSortieForm->get('Publier')->isClicked()) {
+                $etat = $etatRepositery->findOneBy(["libelle" => "Ouverte"]);
+            }else{
+                $etat = $etatRepositery->findOneBy(["libelle" => "Créée"]); 
+            }
             $sortie->setEtat($etat);
             $sortie->setOrganisateur($this->getUser());
             $sortie->setSiteOrganisateur($this->getUser()->getCampus());
@@ -33,28 +36,11 @@ class SortieController extends AbstractController
 
             $this->addFlash('success', 'La sortie a bien été créée');
             return $this->redirectToRoute('main_home');
-        }
-    
+        }    
 
-    if ($creerSortieForm->get('Publier')->isClicked() && $creerSortieForm->isSubmitted()) {
-
-            if ($creerSortieForm->isValid()) {
-            $etat = $etatRepositery->findOneBy(["libelle" => "Ouverte"]);
-            $sortie->setEtat($etat);
-            $sortie->setOrganisateur($this->getUser());
-            $sortie->setSiteOrganisateur($this->getUser()->getCampus());
-            $entityManager->persist($sortie);
-            $sortie->addInscrit($this->getUser());
-            $entityManager->flush();
-
-            $this->addFlash('success', 'La sortie a bien été publiée');
-            return $this->redirectToRoute('main_home');
-        }
-    }
-
-    return $this->render('sortie/creer.html.twig', [
-        'creerSortieForm' => $creerSortieForm->createView()
-    ]);            
+            return $this->render('sortie/creer.html.twig', [
+            'creerSortieForm' => $creerSortieForm -> createView(),
+        ]);            
         }
 
         #[Route('sortie/supprimer/{sortieId}', name: 'sortie_supprimer', methods: ['POST'])]
