@@ -22,9 +22,9 @@ Créer une nouvelle sortie | {{parent() }}
         {{ form_row(creerSortieForm.lieuSortie) }}
         {% endif %}
 
-        <button>Ajouter un lieu</button>
+        
 
-        {#<div>
+        <div>{% if creerSortieForm.lieuSortie is defined %}
             <div>
                 <label for="rechercherlieu"> Rechercher un lieu </label>
                 <input type="text" id="rechercherLieu" class="form-control m-2">
@@ -34,7 +34,9 @@ Créer une nouvelle sortie | {{parent() }}
                 {{ form_widget(creerSortieForm.creerLieu.latitude, {'attr': {'type': 'hidden'}}) }}
                 {{ form_widget(creerSortieForm.creerLieu.longitude, {'attr': {'type': 'hidden'}})}}
             </div>
-        </div>#}
+            <button>Ajouter un lieu</button>
+            {% endif %}
+        </div>
         
     </div>
 </div>

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
+#[Route('/sortie', name:'sortie_')]
 class SortieController extends AbstractController
 {
     //traitement du formulaire de création de sortie

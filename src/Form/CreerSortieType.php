@@ -31,12 +31,12 @@ class CreerSortieType extends AbstractType
                 'label' => 'Quel nom voulez vous donnez à votre sortie ?'
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => 'Date et heure de la sortie',
+                'label' => 'Date et heure de la sortie :',
                 'html5' => true,
                 'widget' => 'single_text'
             ])
             ->add('duree', IntegerType::class, [
-                'label' => 'Durée de la sortie (en minute)',
+                'label' => 'Durée de la sortie (en minute) :',
                 'attr' => [
                     'min' => 5
                 ]
@@ -44,14 +44,14 @@ class CreerSortieType extends AbstractType
             ->add('ville', EntityType::class, [
                 'class' => Ville::class,
                 'choice_label'=>'Nom',
-                'label'=>'Ville',
+                'label'=>'Ville :',
                 'mapped'=>false,
                 'placeholder'=>''
                 ])
             ->add('lieuSortie', EntityType::class, [
                 'class' => Lieu::class,
                 'choice_label'=>'Nom',
-                'label' => 'Lieu de la sortie',
+                'label' => 'Lieu de la sortie :',
                 'placeholder'=>''
             ])
             ->add('creerLieu', CreerLieuType::class, [
@@ -59,17 +59,17 @@ class CreerSortieType extends AbstractType
                 'mapped' => false
             ])            
             ->add('nbInscriptionsMax', IntegerType::class, [
-                'label' => 'Nombre de participants maximum',
+                'label' => 'Nombre de participants maximum :',
                 'attr' => [
                     'min' => 1
                 ]
             ])
             ->add('infosSortie', TextareaType::class, [
-                'label' => 'Description de la sortie'
+                'label' => 'Description de la sortie :'
             ])
 
             ->add('dateLimiteInscription', DateType::class, [
-                'label' => 'Date limite d\'inscription',
+                'label' => 'Date limite d\'inscription :',
                 'html5' => true,
                 'widget' => 'single_text'
             ])
