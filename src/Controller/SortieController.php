@@ -54,8 +54,30 @@ class SortieController extends AbstractController
 
     return $this->render('sortie/creer.html.twig', [
         'creerSortieForm' => $creerSortieForm->createView()
-    ]);
-            
+    ]);            
+        }
+
+        #[Route('sortie/supprimer/{sortieId}', name: 'sortie_supprimer', methods: ['POST'])]
+        public function delete(Request $request, Sortie $sortie, EntityManagerInterface $entityManager): Response
+        {
+            if ($this->isCsrfTokenValid('supprimer' . $sortie->getId(), $request->request->get('_token'))) {
+                $entityManager->remove($sortie);
+                $entityManager->flush();
+            }
+    
+            return $this->redirectToRoute('main_home');
+        }
+    
+        #[Route('sortie/annuler/{sortieId}', name: 'sortie_annuler_admin')]
+        public function annuler($sortieId, SortieRepository $sortieRepository): Response
+        {
+            $sortie = $sortieRepository->findOneBy(['id' => $sortieId], []);
+            $annuler = true;
+            return $this->render('sortie/annuler.html.twig', [    
+                'sortie' => $sortie,
+                'annuler' => $annuler,
+            ]);
+    
         }
 
     #[Route('sortie/afficher/{sortieId}')]

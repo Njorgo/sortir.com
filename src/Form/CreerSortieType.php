@@ -51,7 +51,7 @@ class CreerSortieType extends AbstractType
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre de participants maximum :',
                 'attr' => [
-                    'min' => 1
+                    'min' => 2
                 ]
             ])
             ->add('infosSortie', TextareaType::class, [
