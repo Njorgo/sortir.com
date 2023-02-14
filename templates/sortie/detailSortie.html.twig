@@ -24,6 +24,8 @@
             </div>
         </div>
         <section class="participant_inscrits"> Liste des participants : <br>
+
+            {{ sortie.inscrits|length }}
             <table class="table table-striped">
                 <tbody>
                 <tr>
@@ -33,7 +35,7 @@
                     <td>
                         <a href="{{ asset('profil/'~ inscrit.id) }}">{{ inscrit.pseudo }}</a>
                     </td>
-                    <td>{{ inscrit.nom }} {{ inscrit.prenom| upper }}</td>
+                    <td>{{ inscrit.nom }} {{ inscrit.prenom }}</td>
                 </tr> {% endfor %}
                 </tbody>
             </table>

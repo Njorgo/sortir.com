@@ -68,7 +68,7 @@
                     </td>
                     <td>
                         {# iSortie.action #}
-                        <a href="{{ asset('afficher/' ~ iSortie.id) }}">{{ iSortie.action  }}</a>
+                        <a href="{{ asset('sortie/afficher/' ~ iSortie.sortieID) }}">{{ iSortie.action  }}</a>
                         <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.sortieID }) }}"> - S'inscrire -</a>
                         <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.sortieID }) }}"> Se désister</a>
                     </td>
