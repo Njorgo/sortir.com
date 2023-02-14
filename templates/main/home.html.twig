@@ -55,22 +55,23 @@
                         {{   iSortie.dateLimiteInscription | date('Y-m-d') }}
                     </td>
                     <td>
-                        {{  iSortie.nbInscriptionsMax }}
+                        {{ iSortie.inscrits.count }}/{{  iSortie.nbInscriptionsMax }}
                     </td>
                     <td>
-                        {{  iSortie.libelle }}
+                        {{  iSortie.etat.libelle }}
                     </td>
 
                     <td>
+
                     </td>
                     <td>
-                        <a href="{{ asset('profil/' ~ iSortie.organisateurId) }}">{{ iSortie.pseudo }}</a>
+                        <a href="{{ asset('profil/' ~ iSortie.organisateur.id) }}">{{ iSortie.organisateur.pseudo }}</a>
                     </td>
                     <td>
                         {# iSortie.action #}
-                        <a href="{{ asset('sortie/afficher/' ~ iSortie.sortieID) }}">{{ iSortie.action  }}</a>
-                        <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.sortieID }) }}"> - S'inscrire -</a>
-                        <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.sortieID }) }}"> Se désister</a>
+                        <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
+                        <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}"> - S'inscrire -</a>
+                        <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}"> Se désister</a>
                     </td>
                 </tr>
             {% endfor %}

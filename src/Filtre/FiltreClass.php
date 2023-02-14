@@ -2,26 +2,24 @@
 
 namespace App\Filtre;
 
+use App\Entity\Campus;
+
 class FiltreClass
 {
+    public ?string $motCle = null;
 
-    public string $motCle;
+    public ?Campus $campus= null;
 
+    public ?\DateTime $dateMini= null;
 
-    public $campus;
+    public ?\DateTime $dateMax = null;
 
-    public $dateMini;
+    public bool $sortiesFinies = false;
 
-    public $dateMax;
+    public bool $estOrganisee = false;
 
-    public $sortiesFinies;
+    public bool $estInscrit = false;
 
-    public $estOrganisee;
-
-    public $estInscrit;
-
-    public $nonInscrit;
-
-
+    public bool $nonInscrit = false;
 
 }

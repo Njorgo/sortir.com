@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Filtre\FiltreClass;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -41,37 +42,32 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-    public function listeInfosSorties(FiltreClass $data)
+    public function listeInfosSorties(FiltreClass $data, Participant $user)
     {
+        $queryBuilder=$this->createQueryBuilder('s')
+            ->join('s.etat', 'e')
+            ->addSelect('e')
+            ->leftJoin('s.inscrits', 'i')
+            ->addSelect('i')
+            ->leftJoin('s.siteOrganisateur', 'c')
+            ->addSelect('c')
+            ->orderBy('s.dateHeureDebut', 'DESC');
 
-        $entityManager = $this->getEntityManager();
-        $dql = "SELECT s.id as sortieID, s.nom, s.dateHeureDebut, s.dateLimiteInscription, s.duree, s.nbInscriptionsMax,  e.libelle, e.id,  p.pseudo, p.id as organisateurId
-        FROM App\Entity\Sortie s 
-        LEFT JOIN App\Entity\Etat e
-        WITH e.id = s.etat
-        LEFT JOIN App\Entity\Participant p
-        WITH p.id = s.organisateur";
-
+        //filtre recherche par nom partiel ou total
         if (!empty($data->motCle)){
-            $dql = "SELECT s.id as sortieID, s.nom, s.dateHeureDebut, s.dateLimiteInscription, s.duree, s.nbInscriptionsMax,  e.libelle, e.id,  p.pseudo, p.id as organisateurId
-        FROM App\Entity\Sortie s 
-        LEFT JOIN App\Entity\Etat e
-        WITH e.id = s.etat
-        LEFT JOIN App\Entity\Participant p
-        WITH p.id = s.organisateur
-        WHERE s.nom LIKE :foo";
-            $query = $entityManager->createQuery($dql);
-            $query->setParameter('foo', '%'.$data->motCle.'%');
-            dump($data);
-            $results = $query->getResult();
-            return $results;
+            $queryBuilder
+                ->andWhere('s.nom LIKE :nom' )
+                ->setParameter('nom', '%'.$data->motCle.'%');
         }
-        else
-        {
-            $query = $entityManager->createQuery($dql);
-            $results = $query->getResult();
-            return $results;
+        //filtre par campus
+        if (!empty($data->campus)){
+           $queryBuilder
+               ->andWhere('s.siteOrganisateur = :campus')
+               ->setParameter('campus', $data->campus);
+
         }
+            return $queryBuilder->getQuery()->getResult();
+
     }
 
 

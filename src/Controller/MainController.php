@@ -6,13 +6,16 @@ use App\Entity\Participant;
 use App\Filtre\FiltreClass;
 use App\Entity\Sortie;
 use App\Form\FiltreType;
+use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,31 +24,34 @@ class MainController extends AbstractController {
     #[Route('/', name: 'main_home')]
     public function affichageDonnees(
         SortieRepository $sortieRepository,
-        ParticipantRepository $participantRepository,
-        EntityManagerInterface $entityManagerInterface,
-        Request $request
-    ){
+        Request $request) : Response
+    {
         //gestion des filtres via formulaire
         $data= new FiltreClass();
+        $data->campus=$this->getUser()->getCampus();
+
         $formFiltre = $this->createForm(FiltreType::class, $data);
         $formFiltre->handleRequest($request);
 
+        $listeInfosSortie = $sortieRepository->listeInfosSorties($data, $this->getUser());
+
         /* Création du tableau des actions*/
-        $etatAction = [
+        /*$etatAction = [
             1 => 'Afficher',
             2 => 'Se désister' ,
             3 => "S'inscrire",
             4 => 'Modifier',
             5 =>'Publier',
             6 =>'Annuler'
-        ];
+        ];*/
 
         /* Affichage des informations demandés pour les différentes sorties proposées */
-        $listeInfosSortie = $sortieRepository->listeInfosSorties($data);
-        $listeInfosSortieRender = [];
+
+        /*$listeInfosSortieRender = [];
         $dateHeureActuelle = new DateTime("now");
 
-        $participant = $this->getUser();
+
+        /*$participant = $this->getUser();
         foreach($listeInfosSortie as $infosSortie) {
             $dureeInterval = DateInterval::createFromDateString(strval($infosSortie['duree']). ' min');
             $dateHeureFin = clone $infosSortie['dateHeureDebut'];
@@ -58,6 +64,7 @@ class MainController extends AbstractController {
                 $infosSortie['libelle'] = 'Passée';
                 $infosSortie['action'] = 'Afficher';
                 $infosSortie['action2'] = '';
+
             } else {
                 $infosSortie['libelle'] = 'Ouverte';
                 $infosSortie['action'] = 'Afficher';
@@ -72,14 +79,14 @@ class MainController extends AbstractController {
                   $infosSortie['inscrit'] = 'X';
                   $infosSortie['action'] .= ' - Se désister';
               }*/
-            elseif($dateHeureActuelle < $infosSortie['dateHeureDebut']){
+            /*elseif($dateHeureActuelle < $infosSortie['dateHeureDebut']){
                 $infosSortie['action2'] = " - S'inscrire";
             }
             array_push($listeInfosSortieRender, $infosSortie);
-        }
+        }*/
 
         return $this->render('main/home.html.twig', [
-            'listeInfosSortie' => $listeInfosSortieRender,
+            'listeInfosSortie' => $listeInfosSortie,
             'formFiltre'=> $formFiltre->createView()
 
         ]);
