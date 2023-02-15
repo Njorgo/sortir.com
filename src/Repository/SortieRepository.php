@@ -65,7 +65,45 @@ class SortieRepository extends ServiceEntityRepository
                ->setParameter('campus', $data->campus);
 
         }
-            return $queryBuilder->getQuery()->getResult();
+
+        if (!empty($data->dateMini)){
+            $queryBuilder
+                ->andWhere('s.dateHeureDebut >:dateMini')
+                ->setParameter('dateMini', $data->dateMini);
+        }
+
+        if (!empty($data->dateMax)){
+            $queryBuilder
+                ->andWhere('s.dateLimiteInscription <:dateMax')
+                ->setParameter('dateMax', $data->dateMax);
+        }
+
+        if (!empty($data->sortiesFinies)){
+            $queryBuilder
+                ->andWhere('e.libelle = :name')
+                ->setParameter('name', 'Clôturée');
+        }
+
+        if (!empty($data->estOrganisee)){
+            $queryBuilder
+                ->andWhere('s.organisateur = :name')
+                ->setParameter('name', $user);
+        }
+
+        if (!empty($data->estInscrit)){
+            $queryBuilder
+                ->andWhere(':name MEMBER OF s.inscrits')
+                ->setParameter('name', $user);
+        }
+
+        if (!empty($data->nonInscrit)){
+            $queryBuilder
+                ->andWhere(':name NOT MEMBER OF s.inscrits')
+                ->setParameter('name', $user);
+        }
+
+
+        return $queryBuilder->getQuery()->getResult();
 
     }
 

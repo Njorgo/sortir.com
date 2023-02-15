@@ -60,16 +60,22 @@
                     </td>
 
                     <td>
-
+                        {% if app.user in iSortie.inscrits %}
+                        X
+                        {% endif %}
                     </td>
                     <td>
                         <a href="{{ asset('profil/' ~ iSortie.organisateur.id) }}">{{ iSortie.organisateur.pseudo }}</a>
                     </td>
                     <td>
                         {# iSortie.action #}
-                        <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
-                        <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}"> - S'inscrire -</a>
-                        <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}"> Se désister</a>
+                        - <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a> -
+                        {% if iSortie.inscrits.count < iSortie.nbInscriptionsMax and app.user not in iSortie.inscrits%}
+                        <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">S'inscrire</a> -
+                        {% endif %}
+                        {% if app.user in  iSortie.inscrits%}
+                        <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">Se désister</a> -
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
