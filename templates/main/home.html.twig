@@ -58,18 +58,50 @@
                     <td>
                         {{  iSortie.etat.libelle }}
                     </td>
-
                     <td>
-
+                        {% for inscrit in iSortie.inscrits %}
+                            {% if inscrit == app.user %}
+                                X
+                            {% endif %}
+                        {% endfor %}
                     </td>
                     <td>
                         <a href="{{ asset('profil/' ~ iSortie.organisateur.id) }}">{{ iSortie.organisateur.pseudo }}</a>
                     </td>
                     <td>
-                        {# iSortie.action #}
-                        <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
-                        <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}"> - S'inscrire -</a>
-                        <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}"> Se désister</a>
+                        {# Gestion état quand utilisateur est connecté et se trouve également être l'organisateur de la sortie #}
+                        {% if iSortie.organisateur.id == app.user.id %}
+                            {% if iSortie.etat.libelle == "Créée" %}
+                                <a href="#">Modifier</a>
+                                &nbsp;&nbsp;-&nbsp;&nbsp;
+                                <a href="#">Publier</a>
+                            {% elseif iSortie.etat.libelle == "Annulée" or iSortie.etat.libelle == "Ouverte" %}
+                                <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
+                                &nbsp;&nbsp;-&nbsp;&nbsp;
+                                <a href="#">Annuler </a>
+                            {% else %}
+                                <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
+                            {% endif %}
+
+                            {# Gestion état quand utilisateur est connecté et s'inscrit ou se désinscrit #}
+                            {% elseif iSortie.etat.libelle == "Ouverte"  and iSortie.inscrits.count <= iSortie.nbInscriptionsMax %}
+                                    <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
+                                {% set trouve = false %}
+                                {% for inscrit in iSortie.inscrits %}
+                                    {% if inscrit == app.user %}
+                                        &nbsp;&nbsp;-&nbsp;&nbsp;
+                                        <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">Se désister </a>
+                                        {% set trouve = true %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if trouve == false and iSortie.inscrits.count < iSortie.nbInscriptionsMax %}
+                                    &nbsp;&nbsp;-&nbsp;&nbsp;
+                                    <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">S'inscrire </a>
+                                {% endif %}
+                            {% else %}
+                                {# Gestion des états passés - clôturée - nombre inscription max rempli - activité en cours #}
+                                <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
