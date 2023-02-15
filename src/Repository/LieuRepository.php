@@ -39,15 +39,17 @@ class LieuRepository extends ServiceEntityRepository
         }
     }
 
-    public function lieuParVille(int $id){
+    public function lieuParVille($value){
 
-        $qb = $this->createQueryBuilder('l')
-            ->select('l','v')
-            ->innerJoin('l.ville', 'v')
-            ->andWhere('v.id = :id')
-            ->setParameter(':id', $id);
-
-        return $qb->getQuery()->getResult();
+        return $this->createQueryBuilder('l')
+        ->leftJoin('l.ville', 'v')
+        ->andWhere('v.id  = :val')
+        ->setParameter('val', $value)
+        ->orderBy('l.nom', 'ASC')
+        ->setMaxResults(10)
+        ->getQuery()
+        ->getResult()
+        ;
     }
 
 //    /**

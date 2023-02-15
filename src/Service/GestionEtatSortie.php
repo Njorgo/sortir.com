@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class GestionEtatSortie {
 
-    public function miseAJourDesEtats(EtatRepository $etatRepository, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): void
+    public function majEtats(EtatRepository $etatRepository, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): void
     {
         $sorties = $sortieRepository->listeSorties();
         $dateJour = new \DateTime();

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LieuRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LieuRepository::class)]
 class Lieu
@@ -11,22 +12,28 @@ class Lieu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['liste_lieux'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['liste_lieux'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['liste_lieux'])]
     private ?string $rue = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['liste_lieux'])]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['liste_lieux'])]
     private ?float $longitude = null;
 
     #[ORM\ManyToOne(inversedBy: 'lieux')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['liste_lieux'])]
     private ?Ville $ville = null;
 
     public function getId(): ?int
