@@ -135,37 +135,5 @@ class MainController extends AbstractController {
 
         return $this->redirectToRoute('main_home');
 
-    }
-
-    #[Route('/supprimer/{idSortie}', name: 'supprimer')]
-    public function supprimer($sortieId, SortieRepository $sortieRepository, EntityManagerInterface $entityManager, CampusRepository $campusRepository,
-    ParticipantRepository $participantRepository, GestionEtatSortie $gestionEtatSortie,): Response {
-        $sortie = $sortieRepository->findOneBy(['id' => $sortieId], []);
-        $erreur = false;
-        $user = $participantRepository->findOneBy(['username' => $this->getUser()->getUserIdentifier()]);
-
-        if ($sortie->getEtat() != "Créée") {
-            $this->addFlash('error', "Vous ne pouvez pas modifier une sortie qui n'est créée");
-            $erreur = true;
-        }
-        if ($sortie->getOrganisateur() !== $user) {
-            $this->addFlash('error', "Vous ne pouvez pas modifier une sortie que vous n'organisée pas");
-            $erreur = true;
-        }
-
-        if ($erreur == false) {
-            $entityManager->remove($sortie);
-            $entityManager->flush();
-        }
-        $gestionEtatSortie->verifierEtat();
-        $campus = $campusRepository->findAll();
-        $sorties = $sortieRepository->findAll();
-
-        return $this->render('home.html.twig', [
-            "sorties" => $sorties,
-            "campus" => $campus,
-        ]);
-    }
-
-
+    }  
 }
