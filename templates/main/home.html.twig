@@ -58,24 +58,43 @@
                     <td>
                         {{  iSortie.etat.libelle }}
                     </td>
-
                     <td>
-                        {% if app.user in iSortie.inscrits %}
-                        X
-                        {% endif %}
+                        {% for inscrit in iSortie.inscrits %}
+                            {% if inscrit == app.user %}
+                                X
+                            {% endif %}
+                        {% endfor %}
                     </td>
                     <td>
                         <a href="{{ asset('profil/' ~ iSortie.organisateur.id) }}">{{ iSortie.organisateur.pseudo }}</a>
                     </td>
                     <td>
-                        {# iSortie.action #}
-                        - <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a> -
-                        {% if iSortie.inscrits.count < iSortie.nbInscriptionsMax and app.user not in iSortie.inscrits%}
-                        <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">S'inscrire</a> -
+                        {% if iSortie.etat.id == 1 %}
+                            <a href="#">Modifier</a>
+                            &nbsp;&nbsp;-&nbsp;&nbsp;
+                            <a href="#">Publier</a>
+                        {% elseif iSortie.etat.id == 2 and iSortie.inscrits.count < iSortie.nbInscriptionsMax %}
+                            <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
+                            {% set trouve = false %}
+                            {% for inscrit in iSortie.inscrits %}
+                                {% if inscrit == app.user %}
+                                    &nbsp;&nbsp;-&nbsp;&nbsp;
+                                    <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">Se désister </a>
+                                    {% set trouve = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if trouve == false %}
+                                &nbsp;&nbsp;-&nbsp;&nbsp;
+                                <a href="{{ path('inscrire_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">S'inscrire </a>
+                            {% endif %}
+                        {% elseif iSortie.etat.id == 6 %}
+                            <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
+                            &nbsp;&nbsp;-&nbsp;&nbsp;
+                            <a href="#">Annuler </a>
+                        {% else %}
+                            <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
                         {% endif %}
-                        {% if app.user in  iSortie.inscrits%}
-                        <a href="{{ path('desistement_sortie', { 'participant_id': app.user.id, 'sortie_id': iSortie.id }) }}">Se désister</a> -
-                        {% endif %}
+
                     </td>
                 </tr>
             {% endfor %}
