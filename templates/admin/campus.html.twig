@@ -23,9 +23,10 @@
                     {{ lcampus.nom }}
                 </td> 
                 <td>  
-                    <a href="#">Modifier</a>
+                    <a href="{{ path('admin_campus_modifier',{'id':lcampus.id}) }}">Modifier</a>
                     
-                    <a href="{{ asset('/admin/campus/' ~ lcampus.id) }}">Supprimer</a>                
+                    <a href="{{ path('admin_campus_supprimer',{'id':lcampus.id}) }}">Supprimer</a>            
+                      
                 </td>
             </tr>
         {% endfor %}       
@@ -33,7 +34,7 @@
     </table>
     <table class="table table-striped" >
         <tr>            
-          <td align="center"><a href="#">Ajouter</a></td>
+          <td align="center"><a href="{{ path('admin_campus_creer') }}">Ajouter</a></td>
         </tr>
     </table>
  

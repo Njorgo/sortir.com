@@ -2,7 +2,7 @@
     <ul>
         {% if is_granted("ROLE_ADMIN") %}
             <li><a href="#" title="Villes">Villes</a></li>
-            <li><a href="#" title="Campus">Campus</a></li>
+            <li><a href="{{path('admin_campus')}}" title="Campus">Campus</a></li>
         {% endif %}
             <li><a href="{{path('main_home')}}" title="Home">Accueil</a></li>
             <li><a href="{{ path('profil_participant_Connecte') }}" title="Mon profil">Mon profil</a></li>
