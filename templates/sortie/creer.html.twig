@@ -3,9 +3,9 @@
 {% block title %}
 Créer une nouvelle sortie | {{parent() }}
 {% endblock %}
-{% block javascripts %}{{parent() }}
+{% block script %}{{parent() }}
 
-    <script src="{{ asset('js/selectionVille.js') }}" defer></script> 
+<script src="{{ asset('js/selectionVille.js') }}"></script> 
    
 {% endblock %}
 
@@ -23,9 +23,8 @@ Créer une nouvelle sortie | {{parent() }}
         <span>Campus : </span> {{ app.user.campus.nom }}
         {{ form_row(creerSortieForm.ville) }} 
        {# {{ form_row(creerSortieForm.chercherLieu) }} #}
-        {{ form_row(creerSortieForm.lieuSortie) }} 
+        {{ form_row(creerSortieForm.lieuSortie) }}
         
-
        <div> <a href="{{ path('lieu_cree') }}" class="btn btn-primary">Ajouter un lieu</a> </div>
         </div>
         

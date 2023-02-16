@@ -39,14 +39,6 @@ class VilleRepository extends ServiceEntityRepository
         }
     }
 
-    public function villeParCodePostal(){
-
-        $qb = $this->createQueryBuilder('v')
-            ->orderBy('v.codePostal', 'ASC');
-
-        return $qb->getQuery()->getResult();
-    }
-
 //    /**
 //     * @return Ville[] Returns an array of Ville objects
 //     */
