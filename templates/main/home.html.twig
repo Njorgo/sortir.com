@@ -76,10 +76,12 @@
                                 <a href="#">Modifier</a>
                                 &nbsp;&nbsp;-&nbsp;&nbsp;
                                 <a href="#">Publier</a>
-                            {% elseif iSortie.etat.libelle == "Annulée" or iSortie.etat.libelle == "Ouverte" %}
+                            {% elseif iSortie.etat.libelle == "Ouverte" %}
                                 <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
                                 &nbsp;&nbsp;-&nbsp;&nbsp;
-                                <a href="#">Annuler </a>
+                                {% if iSortie.etat.libelle != 'Annulée' %}
+                                <a href="{{ asset('sortie/annuler/' ~iSortie.id) }}">Annuler </a>
+                                {% endif%}
                             {% else %}
                                 <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
                             {% endif %}
