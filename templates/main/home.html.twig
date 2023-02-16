@@ -41,7 +41,8 @@
                     Actions
                 </th>
             </tr>
-            {% for iSortie in listeInfosSortie %}
+            {% for iSortie in listeInfosSortie%}
+                {% if iSortie.etat.libelle != 'Archivée' %}
                 <tr>
                     <td>
                         {{  iSortie.nom }}
@@ -104,6 +105,7 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
