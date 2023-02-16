@@ -43,6 +43,11 @@
             </tr>
             {% for iSortie in listeInfosSortie %}
                 {% if iSortie.etat.libelle != 'Archivée' %}
+                    {% set estVisible = true %}
+                    {% if iSortie.etat.libelle == "Créée" and  iSortie.organisateur.id != app.user.id %}
+                        {% set estVisible = false %}
+                    {% endif %}
+                    {% if estVisible == true %}
                 <tr>
                     <td>
                         {{  iSortie.nom }}
@@ -107,6 +112,7 @@
                         {% endif %}
                     </td>
                 </tr>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
             </tbody>
