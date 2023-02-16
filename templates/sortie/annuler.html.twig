@@ -13,18 +13,21 @@
         </div>    
         <div class="row">
             <label>Ville organisatrice :</label>
-                <p>{{ sortie.site.nom }}</p>
+                <p>{{ sortie.lieuSortie.ville.nom }}</p>
             </div>
         <div class="row">
             <label>Lieu :</label>
-            <p>{{ sortie.lieu.nom }}</p>
-            </div>        
-    <form action="{{ path('main_annuler', {'sortieId': sortie.id}) }}" method="post">
-            <div class="row">                
-                    <label>Motif :</label>                
-                    <textarea rows="5"></textarea>
-                <button type="submit" class="btn btn-primary">Confirmer</button>
-            <a href="{{ path('main_accueil') }}" class="btn btn-primary">Annuler</a>
+            <p>{{ sortie.lieuSortie.nom }}</p>
             </div>
-    </form>
+
+                {{ form_start(annulationForm) }}
+                {{ form_row(annulationForm.infosSortie) }}
+    <button type="submit" class="btn btn-primary">>Confirmer</button>
+                {{ form_end(annulationForm) }}
+
+
+
+            <a href="{{ path('main_home') }}" class="btn btn-primary">Annuler</a>
+
+
 {% endblock %}

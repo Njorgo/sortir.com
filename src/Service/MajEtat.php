@@ -28,6 +28,8 @@ class MajEtat
         $etatPassee = $this->etatRepository->findOneBy(['libelle' => 'Passée']);
         $etatOuverte = $this->etatRepository->findOneBy(['libelle' => 'Ouverte']);
         $etatEnCours = $this->etatRepository->findOneBy(['libelle' => 'Activité en cours']);
+        $etatCreee = $this->etatRepository->findOneBy(['libelle'=> 'Créée']);
+        $etatAnnulee = $this->etatRepository->findOneBy(['libelle' => 'Annulée']);
 
         foreach ($sorties as $sortieMaj) {
             $sortie = $this->sortieRepository->find($sortieMaj);
@@ -39,6 +41,12 @@ class MajEtat
             if ($dateFinSortie <= $dateArchive->getTimestamp()) {
                 $sortie->setEtat($this->etatRepository->find($etatArchivee));
                 $this->entityManager->persist($sortie);
+
+            }elseif ($sortie->getEtat() === $etatCreee){
+                $sortie->setEtat($this->etatRepository->find($etatCreee));
+
+            }elseif ($sortie->getEtat() === $etatAnnulee){
+                $sortie->setEtat($this->etatRepository->find($etatAnnulee));
 
             }elseif ($dateFinSortie <= $dateJour->getTimestamp()) {
                 $sortie->setEtat($this->etatRepository->find($etatPassee));

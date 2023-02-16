@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Form\AnnulationSortieType;
 use App\Form\CreerSortieType;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
@@ -55,13 +56,32 @@ class SortieController extends AbstractController
         }
     
         #[Route('sortie/annuler/{sortieId}', name: 'sortie_annuler_admin')]
-        public function annuler($sortieId, SortieRepository $sortieRepository): Response
+        public function annuler($sortieId,
+                                SortieRepository $sortieRepository,
+                                Request $request,
+                                EntityManagerInterface $entityManager,
+                                EtatRepository $etatRepository): Response
         {
+            $etatAnnulee = $etatRepository->findOneBy(['libelle'=> 'Annulée']);
             $sortie = $sortieRepository->findOneBy(['id' => $sortieId], []);
             $annuler = true;
+
+            $annulationForm= $this->createForm(AnnulationSortieType::class);
+            $annulationForm->handleRequest($request);
+
+            if ($annulationForm->isSubmitted() && $annulationForm->isValid() ){
+                $motif = $annulationForm->get('infosSortie')->getData();
+                $sortie->setInfosSortie($motif);
+                $sortie->setEtat($etatAnnulee);
+                $entityManager->persist($sortie);
+            }
+
+            $entityManager->flush();
+
             return $this->render('sortie/annuler.html.twig', [    
                 'sortie' => $sortie,
                 'annuler' => $annuler,
+                'annulationForm'=> $annulationForm->createView()
             ]);
     
         }
