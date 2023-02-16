@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Form\CreerParticipantType;
 use App\Repository\CampusRepository;
@@ -29,6 +30,16 @@ class AdminController extends AbstractController
         return $this->render('admin/campus.html.twig', [
             'campus' => $campusRepository->findAll(),
         ]);
+    }
+    
+    #[Route('/admin/campus/{id}', name: 'admin_campus_supprimer')]
+    public function supprimer(Request $request, Campus $campus, CampusRepository $campusRepository): Response
+    {
+        if ($this->isCsrfTokenValid('supprimer'.$campus->getId(), $request->request->get('_token'))) {
+            $campusRepository->remove($campus, true);
+        }
+
+        return $this->redirectToRoute('admin_campus', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/admin/participant', name: 'admin_participant')]
