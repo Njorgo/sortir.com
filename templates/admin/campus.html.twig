@@ -4,21 +4,39 @@
 
 {% block body %}
 <h2>Liste des campus</h2>
-{% for lcampus in campus %}
-<table class="table table-striped">
-    <tbody>
-        <tr>
-            <th scope="col">
-                Nom du campus
-            </th>
+
+<section>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <th scope="col">
+                    Nom du campus
+                </th>
+                <th scope="col">
+                    Actions
+                </th>
+            </tr>
+        {% for lcampus in campus %}
+            <tr>
+                <td>
+                    {{ lcampus.nom }}
+                </td> 
+                <td>  
+                    <a href="#">Modifier</a>
+                    
+                    <a href="{{ asset('/admin/campus/' ~ lcampus.id) }}">Supprimer</a>                
+                </td>
+            </tr>
+        {% endfor %}       
+        </tbody>
+    </table>
+    <table class="table table-striped" >
+        <tr>            
+          <td align="center"><a href="#">Ajouter</a></td>
         </tr>
-        
-        <tr>
-            <td>
-                {{ lcampus.nom }}
-            </td>
-        </tr>
-    </tbody>
-</table>
-{% endfor %}
+    </table>
+ 
+</section>
+
 {% endblock %}
