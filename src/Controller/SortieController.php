@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Form\AnnulationSortieType;
 use App\Form\CreerSortieType;
@@ -51,6 +50,7 @@ class SortieController extends AbstractController
             if ($this->isCsrfTokenValid('supprimer' . $sortie->getId(), $request->request->get('_token'))) {
                 $entityManager->remove($sortie);
                 $entityManager->flush();
+                $this->addFlash('success', 'La sortie a bien été supprimée');
             }
     
             return $this->redirectToRoute('main_home');
@@ -78,6 +78,8 @@ class SortieController extends AbstractController
             }
 
             $entityManager->flush();
+            $this->addFlash('success', 'La sortie a bien été annulée');
+            return $this->redirectToRoute('main_home');
 
             return $this->render('sortie/annuler.html.twig', [    
                 'sortie' => $sortie,
