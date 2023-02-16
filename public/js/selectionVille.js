@@ -11,7 +11,7 @@ function selectionVille(){
         .then(json => {
             console.log(json);
             const lieux = document.querySelector('#creer_sortie_lieuSortie');
-            lieux.innerHTML="";
+            lieux.innerHTML=`<option value="">Sélectionner un lieu</option>`;
             json.map(lieu=>{
                 lieux.innerHTML+=`<option value="${lieu.id}">${lieu.nom}</option>`
             })

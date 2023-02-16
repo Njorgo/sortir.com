@@ -22,8 +22,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreerSortieType extends AbstractType
-{
-    
+{    
     private EntityManagerInterface $em;
 
     public  function __construct(EntityManagerInterface $em) {
