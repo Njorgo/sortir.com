@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Form\CreerParticipantType;
 use App\Repository\CampusRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,23 +35,25 @@ class AdminController extends AbstractController
     public function creerParticipant(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Participant();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+        $creerParticipantForm = $this->createForm(CreerParticipantType::class, $user);
+        $creerParticipantForm->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($creerParticipantForm->isSubmitted() && $creerParticipantForm->isValid()) {
             // encode the plain password
-            $user->setMotPasse($userPasswordHasher->hashPassword($user,$form->get('plainPassword')->getData())
+            $user->setMotPasse($userPasswordHasher->hashPassword($user,$creerParticipantForm->get('motPasse')->getData())
             );
+            $user->setActif(1);
+
 
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
-
+            $this->addFlash('success', 'L\'utilisateur a bien été créée');
             return $this->redirectToRoute('main_home');
         }
 
         return $this->render('admin/creerPartcipant.html.twig', [
-            'registrationForm' => $form->createView(),
+            'creerParticipantForm' => $creerParticipantForm->createView(),
         ]);
     }
 }

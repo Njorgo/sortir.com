@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Sortie;
 use App\Entity\Lieu;
 use App\Entity\Ville;
+use App\Repository\LieuRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -48,18 +49,6 @@ class CreerSortieType extends AbstractType
                     'min' => 5
                 ]
             ])
-            ->add('ville', EntityType::class, [
-                'class' => Ville::class,
-                'choice_label'=>function (Ville $ville) {
-                    return $ville->getNom();
-                },
-                'query_builder' => function (VilleRepository $villeRepository) {
-                    return $villeRepository->createQueryBuilder('v')->orderBy('v.nom', 'ASC');
-                },
-                'label'=>'Ville :',
-                'mapped'=>false,
-                'placeholder'=>''
-                ])
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre de participants maximum :',
                 'attr' => [
@@ -76,13 +65,26 @@ class CreerSortieType extends AbstractType
                 'widget' => 'single_text',
                 'data' => (new \DateTime())->modify('+1 hours')
             ])
-            ->add("Sauvegarder",SubmitType::class)
-            ->add("Publier",SubmitType::class);
+            ->add("Sauvegarder",SubmitType::class, [
+                'attr' => [
+                    'class'=> 'btn btn-primary'
+                ]
+            ])
+            ->add("Publier",SubmitType::class, [
+                'attr' => [
+                    'class'=> 'btn btn-primary'
+                ]
+            ]);
             
             $formModifier = function (FormInterface $form, Ville $ville = null){
                 $form->add('ville', EntityType::class, [
                     'class' => Ville::class,
-                    'choice_label' => 'nom',
+                    'choice_label' =>function (Ville $ville) {
+                        return $ville->getNom();
+                    },
+                    'query_builder' => function (VilleRepository $villeRepository) {
+                        return $villeRepository->createQueryBuilder('v')->orderBy('v.nom', 'ASC');
+                    },
                     'mapped' => false,
                     'placeholder' => 'Sélectionner une Ville',
                     'label' => 'ville',
@@ -94,7 +96,12 @@ class CreerSortieType extends AbstractType
                 $form->add('lieuSortie', EntityType::class, [
                     'class' => Lieu::class,
                     'choices' => $lieux,
-                    'choice_label' => 'nom',
+                    'choice_label' =>function (Lieu $lieux) {
+                        return $lieux->getNom();
+                    },
+                    'query_builder' => function (LieuRepository $lieuRepository) {
+                        return $lieuRepository->createQueryBuilder('l')->orderBy('l.nom', 'ASC');
+                    },
                     'placeholder' => 'Sélectionner un lieu',
                     'label' => 'Lieu'
                 ]);
