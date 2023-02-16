@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %} {% block title %} Modifier une sortie | {{ parent() }} {% endblock %}
+
+{% block script %}
+
+    {{ parent() }}
+
+    <script src="{{ asset('js/selectionVille.js') }}"></script>
+
+{% endblock %}
+
+{% block body %}
+    <h2>Modifier votre sortie</h2>
+    {{ form_start(modificationForm) }}
+
+    <div id="creer-sortie">
+        <div>
+            {{ form_row(modificationForm.nom) }}
+            {{ form_row(modificationForm.dateHeureDebut) }}
+            {{ form_row(modificationForm.dateLimiteInscription) }}
+            {{ form_row(modificationForm.nbInscriptionsMax) }}
+            {{ form_row(modificationForm.duree) }}
+            {{ form_row(modificationForm.infosSortie) }}
+            <span>Campus : </span> {{ app.user.campus.nom }}
+            {{ form_row(modificationForm.ville) }}
+            {{ form_row(modificationForm.lieuSortie) }}
+            <div>
+                <a href="{{ path('lieu_cree') }}" class="btn btn-primary">Ajouter un lieu</a>
+            </div>
+        </div>
+        <div>
+            <div>{{ form_row(modificationForm.Sauvegarder) }}</div>
+            <div>{{ form_row(modificationForm.Publier) }}</div>
+            <div>
+                <a href="{{ path('main_home') }}" class="btn btn-primary">Retour</a>
+            </div>
+            <div>
+                <a href="{{ asset('sortie/annuler/' ~ sortie.id) }}" class="btn btn-primary">Annulation définitive</a>
+            </div>
+        </div>
+    </div>
+    {{ form_end(modificationForm) }}
+
+{% endblock %}

@@ -53,10 +53,10 @@
                         {{  iSortie.nom }}
                     </td>
                     <td>
-                        {{  iSortie.dateHeureDebut | date('Y-m-d H:i') }}
+                        {{  iSortie.dateHeureDebut | date('d-m-Y H:i') }}
                     </td>
                     <td>
-                        {{   iSortie.dateLimiteInscription | date('Y-m-d') }}
+                        {{   iSortie.dateLimiteInscription | date('d-m-Y') }}
                     </td>
                     <td>
                         {{ iSortie.inscrits.count }}/{{  iSortie.nbInscriptionsMax }}
@@ -78,7 +78,7 @@
                         {# Gestion état quand utilisateur est connecté et se trouve également être l'organisateur de la sortie #}
                         {% if iSortie.organisateur.id == app.user.id %}
                             {% if iSortie.etat.libelle == "Créée" %}
-                                <a href="#">Modifier</a>
+                                <a href="{{ asset('sortie/modifier/' ~ iSortie.id)}}">Modifier</a>
                                 &nbsp;&nbsp;-&nbsp;&nbsp;
                                 <a href="{{ asset('sortie/publier/' ~ iSortie.id) }}">Publier</a>
                             {% elseif iSortie.etat.libelle == "Ouverte" %}

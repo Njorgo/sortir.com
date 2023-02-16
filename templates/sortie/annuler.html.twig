@@ -22,12 +22,11 @@
 
                 {{ form_start(annulationForm) }}
                 {{ form_row(annulationForm.infosSortie) }}
-    <button type="submit" class="btn btn-primary">>Confirmer</button>
+    <button type="submit" class="btn btn-primary">Confirmer</button>
                 {{ form_end(annulationForm) }}
 
 
-
-            <a href="{{ path('main_home') }}" class="btn btn-primary">Annuler</a>
+<div><a href="{{ path('main_home') }}" class="btn btn-primary">Retour</a></div>
 
 
 {% endblock %}

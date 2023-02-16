@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Sortie;
 use App\Form\AnnulationSortieType;
 use App\Form\CreerSortieType;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,7 +66,6 @@ class SortieController extends AbstractController
         {
             $etatAnnulee = $etatRepository->findOneBy(['libelle'=> 'Annulée']);
             $sortie = $sortieRepository->findOneBy(['id' => $sortieId], []);
-            $annuler = true;
 
             $annulationForm= $this->createForm(AnnulationSortieType::class);
             $annulationForm->handleRequest($request);
@@ -75,21 +75,22 @@ class SortieController extends AbstractController
                 $sortie->setInfosSortie($motif);
                 $sortie->setEtat($etatAnnulee);
                 $entityManager->persist($sortie);
-            }
-
-            $entityManager->flush();
+                $entityManager->flush();
             $this->addFlash('success', 'La sortie a bien été annulée');
             return $this->redirectToRoute('main_home');
 
+            }
+
+
+
             return $this->render('sortie/annuler.html.twig', [    
                 'sortie' => $sortie,
-                'annuler' => $annuler,
                 'annulationForm'=> $annulationForm->createView()
             ]);
     
         }
 
-    #[Route('sortie/afficher/{sortieId}')]
+    #[Route('sortie/afficher/{sortieId}', name: 'sortie_details')]
     public function detailSortie(int $sortieId, SortieRepository $sortieRepository): Response
     {
         $sortie = $sortieRepository->find($sortieId);
@@ -115,6 +116,36 @@ class SortieController extends AbstractController
         $sortieRepository->changerEtat($newEtat, $sortie);
 
         return $this->redirectToRoute('main_home');
+    }
+
+    #[Route('sortie/modifier/{sortieId}', name: 'sortie_modifier')]
+    public function modifier(
+        $sortieId,
+        SortieRepository $sortieRepository,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        LieuRepository $lieuRepository): Response
+    {
+        $sortie = $sortieRepository->findOneBy(['id'=> $sortieId]);
+        $lieu = $sortie->getLieuSortie();
+        dump($lieu);
+        $modificationForm= $this->createForm(CreerSortieType::class, $sortie);
+        $modificationForm->handleRequest($request);
+
+        if ($modificationForm->isSubmitted() && $modificationForm->isValid()  ){
+            $modification = $modificationForm->getData();
+            $entityManager->persist($modification);
+            $entityManager->flush();
+            $this->addFlash('success', 'La sortie a bien été modifiée');
+            $this->redirectToRoute('main_home');
+        }
+
+
+        return $this->render('sortie/modificationSortie.html.twig',[
+            'sortie'=> $sortie,
+            'modificationForm'=> $modificationForm->createView()
+        ]);
+
     }
 
 
