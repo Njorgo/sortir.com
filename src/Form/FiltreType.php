@@ -36,10 +36,13 @@ class FiltreType extends AbstractType
             ->add('dateMini', DateType::class, [
                 'label'=> 'Entre :',
                 'required'=> false,
+                'format'=> 'dd-MM-yyyy'
+
             ])
             ->add('dateMax', DateType::class, [
                 'label'=> 'Et :',
                 'required'=> false,
+                'format'=> 'dd-MM-yyyy'
             ])
             ->add('estOrganisee', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur',

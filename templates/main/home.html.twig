@@ -53,10 +53,10 @@
                         {{  iSortie.nom }}
                     </td>
                     <td>
-                        {{  iSortie.dateHeureDebut | date('Y-m-d H:i') }}
+                        {{  iSortie.dateHeureDebut | date('d-m-Y H:i') }}
                     </td>
                     <td>
-                        {{   iSortie.dateLimiteInscription | date('Y-m-d') }}
+                        {{   iSortie.dateLimiteInscription | date('d-m-Y') }}
                     </td>
                     <td>
                         {{ iSortie.inscrits.count }}/{{  iSortie.nbInscriptionsMax }}
