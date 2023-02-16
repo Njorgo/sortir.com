@@ -75,7 +75,7 @@
                             {% if iSortie.etat.libelle == "Créée" %}
                                 <a href="#">Modifier</a>
                                 &nbsp;&nbsp;-&nbsp;&nbsp;
-                                <a href="#">Publier</a>
+                                <a href="{{ asset('sortie/publier/' ~ iSortie.id) }}">Publier</a>
                             {% elseif iSortie.etat.libelle == "Ouverte" %}
                                 <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
                                 &nbsp;&nbsp;-&nbsp;&nbsp;

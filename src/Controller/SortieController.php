@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Form\AnnulationSortieType;
 use App\Form\CreerSortieType;
@@ -99,4 +100,21 @@ class SortieController extends AbstractController
             'sortie' => $sortie
         ]);
     }
+
+
+    #[Route('sortie/publier/{sortieId}')]
+    public function chgtEtatCreeeEnOuverte(
+        Sortie $sortieId,
+        SortieRepository $sortieRepository,
+        EtatRepository $etatRepository): Response
+    {
+        $sortie = $sortieRepository->findOneBy(['id' => $sortieId], []);
+        $newEtat = $etatRepository->findOneBy(["libelle" => "Ouverte"]);
+        $sortieRepository->changerEtat($newEtat, $sortie);
+
+        return $this->redirectToRoute('main_home');
+    }
+
+
+
 }

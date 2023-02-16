@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Filtre\FiltreClass;
 use App\Entity\Sortie;
@@ -114,6 +115,13 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('s.etat', 'e');
             
             return $qb->getQuery()->getResult();
+    }
+
+    public function changerEtat(Etat $etatId, Sortie $sortie){
+
+        $sortie->setEtat($etatId);
+        $this->save($sortie, true);
+
     }
 
 
