@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\AnnulationSortieType;
 use App\Form\CreerSortieType;
-use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 class SortieController extends AbstractController
 {
     //traitement du formulaire de création de sortie
@@ -123,8 +125,7 @@ class SortieController extends AbstractController
         $sortieId,
         SortieRepository $sortieRepository,
         EntityManagerInterface $entityManager,
-        Request $request,
-        LieuRepository $lieuRepository): Response
+        Request $request): Response
     {
         $sortie = $sortieRepository->findOneBy(['id'=> $sortieId]);
         $lieu = $sortie->getLieuSortie();
@@ -148,6 +149,47 @@ class SortieController extends AbstractController
 
     }
 
+    /**
+     * @param Sortie $sortie_id
+     * @param Participant $participant_id
+     *
+     * @Route("/inscrire-sortie/{sortie_id}/{participant_id}", requirements={"'sortie_id" = "\d+", "participant_id" = "\d+" }, name="inscrire_sortie")
+     * @return RedirectResponse
+     *
+     */
+    public function inscrireSortie(
+        Sortie $sortie_id,
+        Participant $participant_id,
+        EntityManagerInterface $entityManagerInterface,
+    ): RedirectResponse
+    {
 
+        $sortieInscription = $sortie_id->addInscrit($participant_id);
+        $entityManagerInterface->persist($sortieInscription);
+        $entityManagerInterface->flush();
 
+        return $this->redirectToRoute('main_home');
+
+    }
+
+    /**
+     * @param Sortie $sortie_id
+     * @param Participant $participant_id
+     *
+     * @Route("/desistement-sortie/{sortie_id}/{participant_id}", requirements={"'sortie_id" = "\d+", "participant_id" = "\d+" }, name="desistement_sortie")
+     * @return RedirectResponse
+     *
+     */
+    public function desistementSortie(
+        Sortie $sortie_id,
+        Participant $participant_id,
+        EntityManagerInterface $entityManagerInterface): RedirectResponse
+    {
+
+        $sortie_id->removeInscrit($participant_id);
+        $entityManagerInterface->flush();
+
+        return $this->redirectToRoute('main_home');
+
+    }
 }
