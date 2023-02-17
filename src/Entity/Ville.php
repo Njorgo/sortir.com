@@ -23,7 +23,7 @@ class Ville
     #[Groups(['liste_lieux'])]
     private ?string $codePostal = null;
 
-    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Lieu::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Lieu::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $lieux;
 
     public function __construct()
