@@ -92,7 +92,7 @@
                             {% endif %}
 
                             {# Gestion état quand utilisateur est connecté et s'inscrit ou se désinscrit #}
-                            {% elseif iSortie.etat.libelle == "Ouverte"  and iSortie.inscrits.count <= iSortie.nbInscriptionsMax %}
+                            {% elseif iSortie.etat.libelle == "Ouverte" or iSortie.etat.libelle == "Clôturée"  and iSortie.inscrits.count <= iSortie.nbInscriptionsMax %}
                                     <a href="{{ asset('sortie/afficher/' ~ iSortie.id) }}">Afficher</a>
                                 {% set trouve = false %}
                                 {% for inscrit in iSortie.inscrits %}
