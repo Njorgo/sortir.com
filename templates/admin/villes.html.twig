@@ -5,7 +5,7 @@
 {% block body %}
 <h2 align="center">Gérer les villes</h2>
 
-<div>
+<div id="RechercheVilleCampus">
     {{ form_start(villeFiltreForm) }}
     {{ form_widget(villeFiltreForm) }}
     <button class="btn btn-primary">Rechercher</button>
@@ -36,7 +36,7 @@
                 </td>
                 <td>  
                     <a href="{{ path('admin_villes_modifier',{'id':lvilles.id}) }}">Modifier</a>
-                    
+                    &ensp;-&ensp;
                     <a href="{{ path('admin_villes_supprimer',{'id':lvilles.id}) }}">Supprimer</a>         
                       
                 </td>

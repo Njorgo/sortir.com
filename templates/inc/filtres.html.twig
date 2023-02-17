@@ -1,20 +1,25 @@
 {{ form_start(formFiltre) }}
-{{ form_row(formFiltre.motCle) }}
-{{ form_row(formFiltre.campus) }}
+<div id="dispoFiltre">
+<div id="champFiltre">{{ form_row(formFiltre.campus) }}
+     {{ form_row(formFiltre.motCle) }}
+        <h4>Dates :</h4>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(formFiltre.dateMini) }}
+        </div>
 
-    <h4>Dates :</h4>
-<div class="row">
-    <div class="col-md-6">
-        {{ form_row(formFiltre.dateMini) }}</div>
+        <div class="col-md-6">
+            {{ form_row(formFiltre.dateMax) }}
+        </div>
 
-    <div class="col-md-6">
-        {{ form_row(formFiltre.dateMax) }}</div>
-
+    </div>
 </div>
-{{ form_row(formFiltre.estOrganisee) }}
-{{ form_row(formFiltre.estInscrit) }}
-{{ form_row(formFiltre.nonInscrit) }}
-{{ form_row(formFiltre.sortiesFinies) }}
-
-<button type="submit" class="btn btn-primary w100">Filtrer la recherche</button>
+<div id="boutonFiltre">
+    {{ form_row(formFiltre.estOrganisee) }}
+    {{ form_row(formFiltre.estInscrit) }}
+    {{ form_row(formFiltre.nonInscrit) }}
+    {{ form_row(formFiltre.sortiesFinies) }}
+</div>
+<button id="rechercherFiltre" type="submit" class="btn btn-primary w100">Filtrer la recherche</button>
+</div>
 {{ form_end(formFiltre) }}

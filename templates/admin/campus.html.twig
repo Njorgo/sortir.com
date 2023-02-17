@@ -5,7 +5,7 @@
 {% block body %}
 <h2 align="center">Gérer les campus</h2>
 
-<div>
+<div id="RechercheVilleCampus">
     {{ form_start(campusFiltreForm) }}
     {{ form_widget(campusFiltreForm) }}
     <button class="btn btn-primary">Rechercher</button>
@@ -31,7 +31,7 @@
                 </td> 
                 <td>  
                     <a href="{{ path('admin_campus_modifier',{'id':lcampus.id}) }}">Modifier</a>
-                    
+                    &ensp;-&ensp;
                     <a href="{{ path('admin_campus_supprimer',{'id':lcampus.id}) }}">Supprimer</a>            
                       
                 </td>

@@ -1,121 +1,187 @@
-header{
-    padding: 10px 0px;
-    background: #154a80;
-    color:white;
+header {
+  padding: 10px 0px;
+  background: #154a80;
+  color: white;
 }
 
-.container{
-    max-width:90% !important;
+.container {
+  max-width: 90% !important;
 }
 
-h1{
-    text-align:left;
+h1 {
+  text-align: left;
+}
+
+h2 {
+  margin-top: 2rem;
 }
 
 .logo-sortir {
-    display: flex;
-    height: auto;
-    width: auto;
-    max-height: 218px;
-    max-width: 150px;
+  display: flex;
+  height: auto;
+  width: auto;
+  max-height: 218px;
+  max-width: 150px;
 }
 
-nav{
-    display:flex;
-    justify-content:space-between;
-    color:white;
+nav {
+  display: flex;
+  justify-content: space-between;
+  color: white;
 }
 
 nav ul {
-    display: flex;
-    list-style: none;
-    padding-left: 0;
+  display: flex;
+  list-style: none;
+  padding-left: 0;
 }
 
 nav li {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
-ul{
+/*Filtrer les sorties*/
+#dispoFiltre {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 3rem;
+}
 
+#dispoFiltre > #champFiltre {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10rem;
+  justify-content: left;
+}
+
+#dispoFiltre > #boutonFiltre {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  justify-content: center;
+}
+
+#dispoFiltre > #rechercherFiltre {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  margin-left: 10rem;
+  justify-content: right;
+}
+/*Formulaire crée sortie*/
+#creerSortie {
+  margin-top: 2rem;
+  display: grid;
+  justify-content: center;
+}
+#creerSortie h2 {
+    margin-bottom: 1.5rem;
+}
+#btnCreerSortie {
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  margin: 1rem;  
+}
+#btnCreerSortie div {
+    margin: 0.1rem;
+}
+/*Filtre ville et campus*/
+#RechercheVilleCampus{
+    margin-bottom: 1rem;
+}
+/*mon profil*/
+#monProfil {
+    margin-top: 2rem;
+    display: grid;
+    justify-content: center;
+}
+#monProfil h2 {
+    margin-bottom: 1.5rem;
+}
+ul {
 }
 
 a {
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #ffa700;
-    text-decoration:none;
+  color: #ffa700;
+  text-decoration: none;
 }
 
-body{
-    font-family: 'Nunito', sans-serif;
-    background: #e9ecef;
+body {
+  font-family: "Nunito", sans-serif;
+  background: #e9ecef;
 }
 
-footer{
-    margin-top: 5rem;
-    padding: 6px 0px;
-    background: #154a80;
-
+footer {
+  margin-top: 5rem;
+  padding: 6px 0px;
+  background: #154a80;
 }
 
-.credit-footer {    
-    color: #ffffff;          
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.credit-footer {
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo-eni {
-    max-width: 68px;
-    max-height: 68px;
+  max-width: 68px;
+  max-height: 68px;
 }
 
-.participant-profil{
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 30px;
+.participant-profil {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 30px;
 }
-
-.participant-profil-infos{
-    margin-bottom: 1rem;
+.photoProfil {
+    margin-top: 1rem;
+}
+.participant-profil-infos {
+  margin-bottom: 1rem;
 }
 label {
-    display: flex;
+  display: flex;
+  flex-direction: row;
 }
-
-input, textarea, select {
-
-    margin-bottom: 1rem;
-    box-sizing: border-box;
-    max-width: 50%;
-    max-width: 200px;
+input,
+textarea,
+select {
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  max-width: 50%;
+  max-width: 200px;
 }
 .flash {
-    padding: 20px;
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin: 1rem 0;
-    border-radius: 8px;
+  padding: 20px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 8px;
 }
 
 .flash-success {
-    background-color: #239600;
+  background-color: #239600;
 }
 
 .login {
-    margin-top: 5rem;
-    display: grid;
-    justify-content: center;
+  margin-top: 5rem;
+  display: grid;
+  justify-content: center;
 }
+/*Tableau d'affichage sortie, ville et campus*/
 #entete {
-    border: 1px solid #154a80;
+  border: 1px solid #154a80;
 }
 #entete th {
-    background: #154a80;
-    color: #ffffff;
+  background: #154a80;
+  color: #ffffff;
 }

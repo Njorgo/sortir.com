@@ -9,32 +9,25 @@
 {% endblock %}
 
 {% block body %}
-<h2>Creer une sortie</h2>
-{{ form_start(creerSortieForm) }}
 
-<div id="creer-sortie">
-  <div>
-    {{ form_row(creerSortieForm.nom) }}
-    {{ form_row(creerSortieForm.dateHeureDebut) }}
-    {{ form_row(creerSortieForm.dateLimiteInscription) }}
-    {{ form_row(creerSortieForm.nbInscriptionsMax) }}
-    {{ form_row(creerSortieForm.duree) }}
-    {{ form_row(creerSortieForm.infosSortie) }}
-    <span>Campus : </span> {{ app.user.campus.nom }}
-    {{ form_row(creerSortieForm.ville) }}
-    {{ form_row(creerSortieForm.lieuSortie) }}
-    <div>
-      <a href="{{ path('lieu_cree') }}" class="btn btn-primary">Ajouter un lieu</a>      
-    </div>
-  </div>
-  <div>
-    <div>{{ form_row(creerSortieForm.Sauvegarder) }}</div>
-    <div>{{ form_row(creerSortieForm.Publier) }}</div>
-    <div>
-      <a href="{{ path('main_home') }}" class="btn btn-primary">Annuler</a>
-    </div>
-  </div>
+<div id="creerSortie">
+  <h2>Creer une sortie</h2>
+  {{ form_start(creerSortieForm) }}
+  {{ form_row(creerSortieForm.nom) }}
+  {{ form_row(creerSortieForm.dateHeureDebut) }}
+  {{ form_row(creerSortieForm.dateLimiteInscription) }}
+  {{ form_row(creerSortieForm.nbInscriptionsMax) }}
+  {{ form_row(creerSortieForm.duree) }}
+  {{ form_row(creerSortieForm.infosSortie) }}
+  <span>Campus : </span> {{ app.user.campus.nom }}
+  {{ form_row(creerSortieForm.ville) }}
+  {{ form_row(creerSortieForm.lieuSortie) }}
+  <a href="{{ path('lieu_cree') }}" class="btn btn-primary">Ajouter un lieu</a>
 </div>
-{{ form_end(creerSortieForm) }}
-
+    <div id="btnCreerSortie">
+      <div>{{ form_row(creerSortieForm.Sauvegarder) }}</div>
+      <div>{{ form_row(creerSortieForm.Publier) }}</div>
+      <div><a href="{{ path('main_home') }}" class="btn btn-primary">Annuler</a></div>
+    </div> 
+  {{ form_end(creerSortieForm) }}
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends '/base.html.twig' %}
 
 {% block body %}
-     {{ form_start(participantForm) }}
+<h2 align="center">Mon profil</h2>
+    <div id="monProfil"> {{ form_start(participantForm) }}
             {{ form_row(participantForm.pseudo, {'value': app.user.pseudo}) }}
             {{ form_row(participantForm.nom, {'value': app.user.nom}) }}
             {{ form_row(participantForm.prenom, {'value': app.user.prenom}) }}
@@ -10,10 +11,13 @@
             {{ form_row(participantForm.Campus, {'value': app.user.campus.nom}) }}
             {{ form_row(participantForm.motPasse) }}
             {{ form_row(participantForm.confirmation) }}
-            <div><button>Enregistrer modifications</button>
-    {{ form_end(participantForm) }}
-
-    <button><a href="{{ path('main_home') }}">Annuler</a></button></div>
+    </div>
+    <div id="btnCreerSortie">
+        <div>
+            <button class="btn btn-primary">Enregistrer modifications</button>
+            {{ form_end(participantForm) }}
+            <a href="{{ path('main_home') }}" class="btn btn-primary">Annuler</a></div>
+    </div>
 
 {% endblock %}
 
