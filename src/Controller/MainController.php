@@ -6,14 +6,9 @@ use App\Entity\Participant;
 use App\Filtre\FiltreClass;
 use App\Entity\Sortie;
 use App\Form\FiltreType;
-use App\Repository\CampusRepository;
-use App\Repository\EtatRepository;
-use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
-
 use App\Service\MajEtat;
-use DateInterval;
-use DateTime;
+
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,47 +35,7 @@ class MainController extends AbstractController {
         $formFiltre = $this->createForm(FiltreType::class, $data);
         $formFiltre->handleRequest($request);
 
-        $listeInfosSortie = $sortieRepository->listeInfosSorties($data, $this->getUser());
-
-        /* Affichage des informations demandés pour les différentes sorties proposées */
-
-        /*$listeInfosSortieRender = [];
-        $dateHeureActuelle = new DateTime("now");
-
-
-        /*$participant = $this->getUser();
-        foreach($listeInfosSortie as $infosSortie) {
-            $dureeInterval = DateInterval::createFromDateString(strval($infosSortie['duree']). ' min');
-            $dateHeureFin = clone $infosSortie['dateHeureDebut'];
-            date_add($dateHeureFin, $dureeInterval);
-            if ($dateHeureActuelle >= $infosSortie['dateHeureDebut'] AND $dateHeureActuelle < $dateHeureFin) {
-                $infosSortie['libelle'] = 'Activité en cours';
-                $infosSortie['action'] = 'Afficher';
-                $infosSortie['action2'] = '';
-            } elseif ($dateHeureActuelle > $infosSortie['dateHeureDebut']) {
-                $infosSortie['libelle'] = 'Passée';
-                $infosSortie['action'] = 'Afficher';
-                $infosSortie['action2'] = '';
-
-            } else {
-                $infosSortie['libelle'] = 'Ouverte';
-                $infosSortie['action'] = 'Afficher';
-            }
-            if($infosSortie['organisateurId'] == $participant->getId() AND $dateHeureActuelle < $infosSortie['dateHeureDebut']){
-                $infosSortie['action2'] = ' - Annuler';
-            }
-            /* if($infosSortie['organisateurId'] == $participant->getId() AND $infosSortie['organisateurId'] == $infosSortie['sortie_ID']){
-                 $infosSortie['action'].= ' - Se désister';
-             }*/
-            /*  if($infosSortie['organisateurId'] == $participant->getId() AND $participant->getInscrits() !== null) {
-                  $infosSortie['inscrit'] = 'X';
-                  $infosSortie['action'] .= ' - Se désister';
-              }*/
-            /*elseif($dateHeureActuelle < $infosSortie['dateHeureDebut']){
-                $infosSortie['action2'] = " - S'inscrire";
-            }
-            array_push($listeInfosSortieRender, $infosSortie);
-        }*/
+        $listeInfosSortie = $sortieRepository->listeInfosSorties($data, $this->getUser());        
 
         return $this->render('main/home.html.twig', [
             'listeInfosSortie' => $listeInfosSortie,

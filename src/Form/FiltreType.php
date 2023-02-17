@@ -2,14 +2,11 @@
 
 namespace App\Form;
 
-use App\Filtre\FiltreClass;
 use App\Entity\Campus;
-use App\Entity\Participant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,15 +31,16 @@ class FiltreType extends AbstractType
                 'choice_label'=> 'nom'
             ])
             ->add('dateMini', DateType::class, [
-                'label'=> 'Entre :',
+                'label'=> 'Entre :',                
                 'required'=> false,
-                'format'=> 'dd-MM-yyyy'
-
+                'html5' => true,
+                'widget' => 'single_text',
             ])
             ->add('dateMax', DateType::class, [
                 'label'=> 'Et :',
                 'required'=> false,
-                'format'=> 'dd-MM-yyyy'
+                'html5' => true,
+                'widget' => 'single_text',
             ])
             ->add('estOrganisee', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur',

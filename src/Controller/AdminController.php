@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Entity\Ville;
+use App\Form\CampusFiltreType;
 use App\Form\CampusType;
 use App\Form\CreerParticipantType;
+use App\Form\VilleFiltreType;
 use App\Form\VilleType;
 use App\Repository\CampusRepository;
 use App\Repository\VilleRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +23,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     #[Route('/admin/villes', name: 'admin_villes')]
-    public function villes(VilleRepository $villeRepository): Response
+    public function villes(Request $request, EntityManagerInterface $em, VilleRepository $villeRepository)
     {
+        $villeFiltreForm = $this->createForm(VilleFiltreType::class);
+
+        if($villeFiltreForm->handleRequest($request)->isSubmitted() && $villeFiltreForm->isValid()) {
+            $value = $villeFiltreForm['nom']->getData();
+
+            $resultat = $villeRepository->findByVilles($value);
+        }
+        else {
+            $resultat = $em->getRepository(Ville::class)->findAll();
+        }
+
         return $this->render('admin/villes.html.twig', [
-            'villes' => $villeRepository->findAll()
+            'villes' => $resultat,
+            'villeFiltreForm' => $villeFiltreForm->createView()
         ]);
     }
+
 
     #[Route('/admin/villes/ajouter', name: 'admin_villes_ajouter')]
     public function ajouterVille(Request $request, EntityManagerInterface $em){
@@ -82,10 +98,22 @@ class AdminController extends AbstractController
 
 
     #[Route('/admin/campus', name: 'admin_campus')]
-    public function campus(CampusRepository $campusRepository): Response
+    public function campus(Request $request, EntityManagerInterface $em, CampusRepository $campusRepository)
     {
+        $campusFiltreForm = $this->createForm(CampusFiltreType::class);
+
+        if($campusFiltreForm->handleRequest($request)->isSubmitted() && $campusFiltreForm->isValid()) {
+            $value = $campusFiltreForm['nom']->getData();
+
+            $resultat = $campusRepository->findByCampus($value);
+        }
+        else {
+            $resultat = $em->getRepository(Campus::class)->findAll();
+        }
+
         return $this->render('admin/campus.html.twig', [
-            'campus' => $campusRepository->findAll(),
+            'campus' => $resultat,
+            'campusFiltreForm' => $campusFiltreForm->createView()
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Campus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,20 +40,15 @@ class CampusRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Campus[] Returns an array of Campus objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByCampus($value)
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->andWhere('c.nom LIKE ?1');
+        $queryBuilder->setParameter(1, '%'.$value.'%');
+        $query = $queryBuilder->getQuery();
+        $paginator = new Paginator($query);
+        return $paginator;
+    }
 
 //    public function findOneBySomeField($value): ?Campus
 //    {
